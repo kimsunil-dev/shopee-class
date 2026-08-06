@@ -1458,9 +1458,9 @@
 
     function autoUpdateCountdown1() {
         const d = document.getElementById('cfg-date1').value;
-        let t = document.getElementById('cfg-time1-start').value;
-        if(d && t) {
-            if(t.length === 5) { document.getElementById('cfg-countdown1').value = `${d}T${t}`; }
+        let t = document.getElementById('cfg-time1-start').value || '00:00';
+        if(d) {
+            document.getElementById('cfg-countdown1').value = `${d}T${t.padStart(5, '0')}`;
         }
     }
     document.getElementById('cfg-date1').addEventListener('input', autoUpdateCountdown1);
@@ -1468,9 +1468,9 @@
 
     function autoUpdateCountdown2() {
         const d = document.getElementById('cfg-date2').value;
-        let t = document.getElementById('cfg-time2-start').value;
-        if(d && t) {
-            if(t.length === 5) { document.getElementById('cfg-countdown2').value = `${d}T${t}`; }
+        let t = document.getElementById('cfg-time2-start').value || '00:00';
+        if(d) {
+            document.getElementById('cfg-countdown2').value = `${d}T${t.padStart(5, '0')}`;
         }
     }
     document.getElementById('cfg-date2').addEventListener('input', autoUpdateCountdown2);
