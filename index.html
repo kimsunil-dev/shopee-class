@@ -1363,7 +1363,7 @@
             btn.disabled=false; btn.innerHTML='🎟️ 무료 좌석 예약 확정하기';
             return;
         }
-        addLead(d);
+        await addLead(d);
         const r=await sendEmail(d);
         if(r.simulated) showToast('success','예약 확정 (시뮬레이션)',d.name+'님, 좌석이 예약되었습니다.');
         else if(r.success) showToast('success','예약 확정!',d.name+'님, 이메일로 안내가 발송되었습니다.');
