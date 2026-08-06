@@ -1456,6 +1456,22 @@
     }
     function resetConfig(){ appConfig={...DEFAULT_CONFIG}; saveConfigLS(); renderAll(); startCountdown(); populateConfigFields(); showToast('success','초기화 완료','기본값으로 복원되었습니다.'); }
 
+    function autoUpdateCountdown1() {
+        const d = document.getElementById('cfg-date1').value;
+        const t = document.getElementById('cfg-time1-start').value;
+        if(d && t) document.getElementById('cfg-countdown1').value = `${d}T${t}`;
+    }
+    document.getElementById('cfg-date1').addEventListener('change', autoUpdateCountdown1);
+    document.getElementById('cfg-time1-start').addEventListener('change', autoUpdateCountdown1);
+
+    function autoUpdateCountdown2() {
+        const d = document.getElementById('cfg-date2').value;
+        const t = document.getElementById('cfg-time2-start').value;
+        if(d && t) document.getElementById('cfg-countdown2').value = `${d}T${t}`;
+    }
+    document.getElementById('cfg-date2').addEventListener('change', autoUpdateCountdown2);
+    document.getElementById('cfg-time2-start').addEventListener('change', autoUpdateCountdown2);
+
     // Syllabus Editor
     function renderSyllabusEditor(){
         document.getElementById('syllabus-editor-list').innerHTML=syllabus.map((ch,i)=>`
