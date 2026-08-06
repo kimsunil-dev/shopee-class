@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쇼피 실전 대면 무료강의 | 10원 단위 역마진 차단 기술 직강</title>
+    <meta name="description" content="현직 쇼피 ERP/정산 솔루션 아키텍트의 실전 직강. 대면 무료강의에서 10원 단위 역마진 차단 기술과 마케팅 독점 프로세스를 직접 배우세요.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ══════════════════════════════════════════════
+           DESIGN TOKENS
+           ══════════════════════════════════════════════ */
+        :root {
+            --bg-primary: #080c14;
+            --bg-card: #0f172a;
+            --bg-card-alt: #111827;
+            --bg-card-hover: #1e293b;
+            --neon-rose: #f43f5e;
+            --neon-rose-light: #fb7185;
+            --neon-cyan: #06b6d4;
+            --neon-mint: #10b981;
+            --neon-mint-light: #34d399;
+            --neon-amber: #f59e0b;
+            --neon-purple: #a855f7;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-subtle: rgba(148, 163, 184, 0.1);
+            --font-kr: 'Noto Sans KR', sans-serif;
+            --font-en: 'Inter', sans-serif;
+            --glow-mint: 0 0 20px rgba(16, 185, 129, 0.25);
+            --glow-rose: 0 0 20px rgba(244, 63, 94, 0.25);
+            --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.25);
+            --section-px: clamp(20px, 5vw, 80px);
+        }
+
+        /* ══════════════════════════════════════════════
+           RESET & BASE
+           ══════════════════════════════════════════════ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-kr);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6 { letter-spacing: -0.05em; line-height: 1.2; }
+        .font-en { font-family: var(--font-en); }
+        a { text-decoration: none; color: inherit; }
+
+        /* ══════════════════════════════════════════════
+           ANIMATIONS
+           ══════════════════════════════════════════════ */
+        @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        @keyframes ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
+        @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.5); } 70% { box-shadow: 0 0 0 14px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+        @keyframes slide-down { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes urgent-blink { 0%, 100% { opacity: 1; background: rgba(244, 63, 94, 0.25); } 50% { opacity: 0.4; background: rgba(244, 63, 94, 0.08); } }
+        @keyframes toast-in { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toast-out { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 50% { transform: translateX(8px); } 75% { transform: translateX(-4px); } }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes expired-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        .anim-scroll {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .anim-scroll.visible { opacity: 1; transform: translateY(0); }
+
+        /* ══════════════════════════════════════════════
+           FLUID SECTION CONTAINER (max-width 해제)
+           ══════════════════════════════════════════════ */
+        .fluid-section {
+            width: 100%;
+            padding: clamp(60px, 8vh, 100px) var(--section-px);
+        }
+
+        .fluid-inner {
+            width: 100%;
+            /* 초광폭 모니터에서도 최소한의 가독성 유지 */
+            max-width: 2200px;
+            margin: 0 auto;
+        }
+
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: var(--font-en); font-size: clamp(11px, 1vw, 13px); font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--neon-mint); margin-bottom: clamp(12px, 1.5vw, 20px);
+        }
+        .section-title {
+            font-size: clamp(26px, 3.5vw, 52px); font-weight: 900;
+            margin-bottom: clamp(12px, 1.5vw, 20px);
+        }
+        .section-desc {
+            font-size: clamp(14px, 1.2vw, 18px); color: var(--text-secondary);
+            line-height: 1.8; margin-bottom: clamp(32px, 4vw, 60px);
+            max-width: 56ch;
+        }
+
+        .divider {
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+        }
+
+        /* ══════════════════════════════════════════════
+           BUTTONS
+           ══════════════════════════════════════════════ */
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: clamp(12px, 1.2vw, 18px) clamp(24px, 2.5vw, 40px);
+            background: linear-gradient(135deg, var(--neon-mint) 0%, #059669 100%);
+            border: none; border-radius: 14px; color: white;
+            font-size: clamp(14px, 1.1vw, 17px); font-weight: 700; font-family: var(--font-kr);
+            cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: clamp(12px, 1.2vw, 18px) clamp(24px, 2.5vw, 40px);
+            background: transparent; border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 14px; color: var(--neon-mint-light);
+            font-size: clamp(14px, 1.1vw, 17px); font-weight: 700; font-family: var(--font-kr);
+            cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+        }
+        .btn-secondary:hover { background: rgba(16, 185, 129, 0.1); border-color: var(--neon-mint); box-shadow: var(--glow-mint); }
+        .btn-rose {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: clamp(12px, 1.2vw, 18px) clamp(24px, 2.5vw, 40px);
+            background: linear-gradient(135deg, var(--neon-rose) 0%, #e11d48 100%);
+            border: none; border-radius: 14px; color: white;
+            font-size: clamp(14px, 1.1vw, 17px); font-weight: 700; font-family: var(--font-kr);
+            cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+        }
+        .btn-rose:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(244, 63, 94, 0.4); }
+        .btn-naver {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 16px 36px; background: #03c75a; border: none; border-radius: 14px;
+            color: white; font-size: 16px; font-weight: 800; font-family: var(--font-kr);
+            cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+        }
+        .btn-naver:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(3, 199, 90, 0.4); }
+
+        /* ══════════════════════════════════════════════
+           SECTION 1: SCARCITY BANNER
+           ══════════════════════════════════════════════ */
+        .scarcity-banner {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: linear-gradient(90deg, #0f172a 0%, rgba(244, 63, 94, 0.1) 50%, #0f172a 100%);
+            border-bottom: 1px solid rgba(244, 63, 94, 0.2);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            animation: slide-down 0.5s ease-out;
+        }
+        .scarcity-inner {
+            width: 100%; padding: 10px var(--section-px);
+            display: flex; align-items: center; justify-content: center; gap: clamp(12px, 2vw, 24px); flex-wrap: wrap;
+        }
+        .scarcity-text { font-size: clamp(12px, 1vw, 14px); color: var(--text-secondary); }
+        .scarcity-text strong { color: var(--neon-rose-light); }
+        .scarcity-urgent {
+            display: none; align-items: center; gap: 6px;
+            background: rgba(244, 63, 94, 0.2); border: 1px solid rgba(244, 63, 94, 0.5);
+            border-radius: 20px; padding: 4px 16px;
+            font-size: 13px; font-weight: 800; color: #fff;
+            animation: urgent-blink 0.8s ease-in-out infinite;
+        }
+        .scarcity-urgent.active { display: inline-flex; }
+        .scarcity-cta {
+            display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px;
+            background: linear-gradient(135deg, var(--neon-rose) 0%, #e11d48 100%);
+            border: none; border-radius: 20px; color: white;
+            font-size: 12px; font-weight: 700; font-family: var(--font-kr);
+            cursor: pointer; transition: all 0.3s ease; white-space: nowrap; text-decoration: none;
+        }
+        .scarcity-cta:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(244, 63, 94, 0.5); }
+
+        /* ══════════════════════════════════════════════
+           SECTION 2: HERO — WIDE SPLIT LAYOUT
+           ══════════════════════════════════════════════ */
+        .hero {
+            min-height: 100vh; width: 100%;
+            padding: clamp(80px, 10vh, 120px) var(--section-px) clamp(40px, 6vh, 80px);
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: center;
+            position: relative; overflow: hidden;
+        }
+        /* Wide 화면: 좌측 텍스트 / 우측 카드 Split */
+        @media (min-width: 1100px) {
+            .hero {
+                grid-template-columns: 1fr 1fr;
+                gap: clamp(40px, 4vw, 80px);
+            }
+        }
+
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 20% 30%, rgba(244, 63, 94, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-text { position: relative; z-index: 1; }
+
+        .hero-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 24px; padding: 6px 20px;
+            font-size: clamp(11px, 0.9vw, 14px); font-weight: 600; color: var(--neon-mint-light);
+            margin-bottom: clamp(20px, 2.5vw, 36px);
+        }
+        .hero-label::before { content: '●'; font-size: 8px; animation: pulse-glow 2s infinite; }
+
+        .hero-title {
+            font-size: clamp(40px, 6.25vw, 110px); font-weight: 900;
+            margin-bottom: clamp(16px, 2vw, 28px);
+            line-height: 1.1;
+        }
+        .hero-title .accent-rose {
+            background: linear-gradient(135deg, var(--neon-rose), var(--neon-rose-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2vw, 32px);
+            color: var(--text-secondary); line-height: 1.5;
+            margin-bottom: clamp(28px, 3vw, 48px);
+            font-weight: 700;
+        }
+        .hero-subtitle strong { color: var(--neon-mint-light); }
+
+        .hero-cta-group {
+            display: flex; gap: clamp(12px, 1.5vw, 20px); flex-wrap: wrap;
+        }
+
+        /* 히어로 우측 카드 영역 */
+        .hero-right { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 16px; }
+
+        .hero-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 20px; padding: clamp(24px, 2.5vw, 36px);
+            position: relative; overflow: hidden; transition: all 0.4s ease;
+        }
+        .hero-card::before {
+            content: ''; position: absolute; inset: 0; border-radius: 20px; padding: 1px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), transparent, rgba(6, 182, 212, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+        }
+        .hero-card:hover { transform: translateY(-4px); box-shadow: var(--glow-mint); }
+        .hero-card.date-card:hover { box-shadow: var(--glow-rose); }
+        .hero-card.date-card::before {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.3), transparent, rgba(244, 63, 94, 0.15));
+        }
+        .hero-card.session-2 { display: none; }
+        .hero-card.session-2.active { display: block; }
+
+        .card-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: var(--font-en); font-size: clamp(10px, 0.8vw, 12px); font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--text-muted); margin-bottom: 10px;
+        }
+        .card-label .icon { font-size: 16px; }
+        .card-value {
+            font-size: clamp(18px, 2.2vw, 28px); font-weight: 800; color: var(--text-primary); margin-bottom: 4px;
+        }
+        .card-time {
+            font-size: clamp(18px, 2.2vw, 28px); font-weight: 800; color: var(--text-secondary);
+        }
+        .card-sub { font-size: clamp(12px, 1vw, 14px); color: var(--text-secondary); margin-top: 4px; }
+
+        /* 카운트다운 */
+        .countdown-section {
+            margin-top: clamp(24px, 3vw, 40px); text-align: center; position: relative; z-index: 1;
+        }
+        @media (min-width: 1100px) {
+            .countdown-section { grid-column: 1 / -1; }
+        }
+        .countdown-label {
+            font-size: clamp(11px, 0.8vw, 13px); font-weight: 600; color: var(--text-muted);
+            letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-en);
+            margin-bottom: 16px;
+        }
+        .countdown-grid { display: flex; gap: clamp(8px, 1vw, 16px); justify-content: center; }
+        .countdown-unit {
+            background: var(--bg-card); border: 1px solid rgba(244, 63, 94, 0.2);
+            border-radius: 16px; padding: clamp(12px, 1.5vw, 20px) clamp(14px, 2vw, 28px);
+            min-width: clamp(64px, 7vw, 100px); text-align: center; transition: all 0.3s ease;
+        }
+        .countdown-unit:hover { border-color: rgba(244, 63, 94, 0.5); box-shadow: var(--glow-rose); }
+        .countdown-number {
+            font-family: var(--font-en); font-size: clamp(28px, 3.5vw, 52px);
+            font-weight: 900; color: var(--neon-rose); line-height: 1; margin-bottom: 4px;
+            text-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
+        }
+        .countdown-desc {
+            font-size: clamp(10px, 0.7vw, 12px); color: var(--text-muted); font-weight: 600;
+            font-family: var(--font-en); letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        /* 신청 마감 상태 */
+        .countdown-expired {
+            display: none; text-align: center;
+            padding: clamp(20px, 2vw, 32px);
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            border-radius: 16px;
+        }
+        .countdown-expired.active { display: block; }
+        .countdown-expired .expired-text {
+            font-size: clamp(18px, 2vw, 28px); font-weight: 800;
+            color: var(--neon-rose); animation: expired-pulse 2s infinite;
+        }
+        .countdown-expired .expired-sub {
+            font-size: clamp(12px, 1vw, 14px); color: var(--text-muted); margin-top: 8px;
+        }
+
+        /* ══════════════════════════════════════════════
+           SECTION 3: RISK REVERSAL — MULTI-COLUMN
+           ══════════════════════════════════════════════ */
+        .safeguard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(240px, 20vw, 320px), 1fr));
+            gap: clamp(16px, 1.5vw, 24px);
+        }
+        .safeguard-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 20px; padding: clamp(24px, 2.5vw, 36px);
+            position: relative; overflow: hidden; transition: all 0.4s ease;
+        }
+        .safeguard-card::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-mint));
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .safeguard-card:hover::after { opacity: 1; }
+        .safeguard-card:hover { transform: translateY(-4px); box-shadow: var(--glow-cyan); border-color: rgba(6, 182, 212, 0.3); }
+        .safeguard-icon {
+            width: clamp(48px, 4vw, 60px); height: clamp(48px, 4vw, 60px); border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(24px, 2vw, 32px); margin-bottom: clamp(16px, 1.5vw, 24px);
+            background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+        .safeguard-card h4 { font-size: clamp(16px, 1.3vw, 20px); font-weight: 700; margin-bottom: 10px; }
+        .safeguard-card p { font-size: clamp(13px, 1vw, 15px); color: var(--text-secondary); line-height: 1.7; }
+
+        /* ══════════════════════════════════════════════
+           SECTION 4: SYLLABUS — WIDE GRID
+           ══════════════════════════════════════════════ */
+        .syllabus-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(16px, 1.5vw, 24px);
+        }
+        @media (min-width: 1200px) {
+            .syllabus-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .syllabus-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 20px; padding: clamp(24px, 2.5vw, 40px);
+            position: relative; overflow: hidden; transition: all 0.4s ease;
+        }
+        .syllabus-card:hover { transform: translateY(-3px); }
+        .syllabus-card::before {
+            content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--neon-cyan), var(--neon-mint));
+            border-radius: 4px 0 0 4px;
+        }
+        .syllabus-card.marketing-focus {
+            border-color: rgba(244, 63, 94, 0.2);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(244, 63, 94, 0.05) 100%);
+        }
+        .syllabus-card.marketing-focus::before { background: linear-gradient(180deg, var(--neon-rose), var(--neon-rose-light)); }
+        .syllabus-card.marketing-focus:hover { box-shadow: var(--glow-rose); border-color: rgba(244, 63, 94, 0.4); }
+        .syllabus-card:not(.marketing-focus):hover { box-shadow: var(--glow-mint); border-color: rgba(16, 185, 129, 0.3); }
+        .syllabus-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+        .chapter-badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px;
+            border-radius: 20px; font-family: var(--font-en); font-size: 11px; font-weight: 700;
+            letter-spacing: 0.1em; white-space: nowrap;
+        }
+        .chapter-badge.default { background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.3); color: var(--neon-cyan); }
+        .chapter-badge.marketing { background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.3); color: var(--neon-rose-light); animation: pulse-ring 2s infinite; }
+        .week-badge {
+            display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; background: rgba(148, 163, 184, 0.1);
+            border: 1px solid rgba(148, 163, 184, 0.2); color: var(--text-muted); white-space: nowrap;
+        }
+        .marketing-focus .week-badge { background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.3); color: var(--neon-rose-light); }
+        .syllabus-title { font-size: clamp(17px, 1.6vw, 22px); font-weight: 800; margin-bottom: 8px; }
+        .syllabus-subtitle { font-size: clamp(13px, 1vw, 15px); color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6; font-style: italic; }
+        .syllabus-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .syllabus-bullets li {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: clamp(13px, 1vw, 15px); color: var(--text-secondary); line-height: 1.6;
+        }
+        .syllabus-bullets li::before { content: '▸'; color: var(--neon-mint); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+        .marketing-focus .syllabus-bullets li::before { content: '🔥'; }
+
+        /* ══════════════════════════════════════════════
+           SECTION 5: VVIP SECRET WEAPONS
+           ══════════════════════════════════════════════ */
+        .vvip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(300px, 25vw, 480px), 1fr));
+            gap: clamp(16px, 2vw, 28px);
+        }
+        .vvip-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 24px; padding: clamp(28px, 3vw, 44px);
+            position: relative; overflow: hidden; transition: all 0.5s ease;
+        }
+        .vvip-card::before {
+            content: ''; position: absolute; top: -100px; right: -100px;
+            width: 200px; height: 200px; border-radius: 50%; opacity: 0.06; transition: opacity 0.5s ease;
+        }
+        .vvip-card.calc-card::before { background: var(--neon-mint); }
+        .vvip-card.cafe-card::before { background: var(--neon-purple); }
+        .vvip-card:hover::before { opacity: 0.12; }
+        .vvip-card:hover { transform: translateY(-6px); }
+        .vvip-card.calc-card:hover { box-shadow: var(--glow-mint); border-color: rgba(16, 185, 129, 0.3); }
+        .vvip-card.cafe-card:hover { box-shadow: 0 0 20px rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.3); }
+        .vvip-badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 12px;
+            font-size: 11px; font-weight: 700; font-family: var(--font-en);
+            letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px;
+        }
+        .vvip-badge.mint { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--neon-mint-light); }
+        .vvip-badge.purple { background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; }
+        .vvip-card h3 { font-size: clamp(18px, 1.8vw, 24px); font-weight: 800; margin-bottom: 12px; }
+        .vvip-card .desc { font-size: clamp(13px, 1vw, 15px); color: var(--text-secondary); line-height: 1.8; margin-bottom: 20px; }
+        .vvip-feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .vvip-feature-list li { display: flex; align-items: center; gap: 10px; font-size: clamp(12px, 0.9vw, 14px); color: var(--text-secondary); }
+        .vvip-feature-list .check { width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+        .vvip-feature-list .check.mint { background: rgba(16, 185, 129, 0.15); color: var(--neon-mint); }
+        .vvip-feature-list .check.purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .classified-overlay {
+            margin-top: 20px; padding: 18px; border-radius: 14px;
+            background: rgba(16, 185, 129, 0.05); border: 1px dashed rgba(16, 185, 129, 0.2); text-align: center;
+        }
+        .classified-overlay .lock-icon { font-size: 28px; margin-bottom: 6px; opacity: 0.6; }
+        .classified-overlay p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+        /* ══════════════════════════════════════════════
+           SECTION 6: DUAL-TRACK FUNNEL — WIDE GRID
+           ══════════════════════════════════════════════ */
+        .funnel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(clamp(320px, 30vw, 520px), 1fr));
+            gap: clamp(16px, 2vw, 28px);
+        }
+        .funnel-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 24px; padding: clamp(28px, 3vw, 44px);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        .funnel-card.track-a { border-color: rgba(16, 185, 129, 0.2); }
+        .funnel-card.track-b { border-color: rgba(244, 63, 94, 0.2); }
+        .funnel-card.track-a::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon-mint), var(--neon-cyan)); }
+        .funnel-card.track-b::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon-rose), var(--neon-amber)); }
+        .track-label {
+            display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 20px;
+            font-family: var(--font-en); font-size: 11px; font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px;
+        }
+        .track-a .track-label { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--neon-mint-light); }
+        .track-b .track-label { background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); color: var(--neon-rose-light); }
+        .funnel-card h3 { font-size: clamp(18px, 1.8vw, 26px); font-weight: 800; margin-bottom: 8px; }
+        .funnel-card .funnel-desc { font-size: clamp(13px, 1vw, 15px); color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px; }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px 16px; background: var(--bg-primary);
+            border: 1px solid var(--border-subtle); border-radius: 12px;
+            color: var(--text-primary); font-size: 14px; font-family: var(--font-kr);
+            transition: all 0.3s ease; outline: none;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--neon-mint); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+        .track-b .form-group input:focus, .track-b .form-group textarea:focus, .track-b .form-group select:focus { border-color: var(--neon-rose); box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.1); }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+        .form-group select option { background: var(--bg-card); color: var(--text-primary); }
+
+        /* 세션 선택 카드 */
+        .session-picker { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+        .session-picker-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+        .session-pick-card {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; background: var(--bg-primary); border: 2px solid var(--border-subtle);
+            border-radius: 14px; cursor: pointer; transition: all 0.3s ease; position: relative;
+        }
+        .session-pick-card:hover { border-color: rgba(16, 185, 129, 0.4); }
+        .session-pick-card.selected { border-color: var(--neon-mint); background: rgba(16, 185, 129, 0.06); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+        .session-pick-card.soldout { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+        .session-pick-left { display: flex; flex-direction: column; gap: 2px; }
+        .session-pick-left .sp-label { font-family: var(--font-en); font-size: 11px; font-weight: 700; color: var(--neon-cyan); letter-spacing: 0.1em; }
+        .session-pick-left .sp-date { font-size: clamp(14px, 1.1vw, 16px); font-weight: 700; color: var(--text-primary); }
+        .session-pick-left .sp-time { font-size: clamp(12px, 0.9vw, 14px); color: var(--text-secondary); }
+        .session-pick-right { text-align: right; }
+        .session-pick-right .sp-seats { font-size: clamp(14px, 1.1vw, 16px); font-weight: 800; }
+        .session-pick-right .sp-seats.open { color: var(--neon-mint-light); }
+        .session-pick-right .sp-seats.low { color: var(--neon-amber); }
+        .session-pick-right .sp-seats.closed { color: var(--neon-rose); }
+        .session-pick-right .sp-status { font-size: 11px; color: var(--text-muted); }
+        .session-pick-card.selected::before {
+            content: '✓'; position: absolute; top: -8px; right: -8px;
+            width: 22px; height: 22px; border-radius: 50%;
+            background: var(--neon-mint); color: white; font-size: 12px; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .submit-btn {
+            width: 100%; padding: 16px; border: none; border-radius: 14px;
+            font-size: 16px; font-weight: 700; font-family: var(--font-kr);
+            cursor: pointer; transition: all 0.3s ease; margin-top: 8px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .submit-btn.mint { background: linear-gradient(135deg, var(--neon-mint) 0%, #059669 100%); color: white; }
+        .submit-btn.mint:hover { box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4); transform: translateY(-2px); }
+        .submit-btn.rose { background: linear-gradient(135deg, var(--neon-rose) 0%, #e11d48 100%); color: white; }
+        .submit-btn.rose:hover { box-shadow: 0 8px 30px rgba(244, 63, 94, 0.4); transform: translateY(-2px); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+        .form-note { font-size: 11px; color: var(--text-muted); margin-top: 12px; text-align: center; line-height: 1.5; }
+
+        /* ══════════════════════════════════════════════
+           SECTION 7: REGULAR CLASS (정규 과정 안내)
+           ══════════════════════════════════════════════ */
+        .regular-class-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(20px, 2vw, 32px);
+        }
+        @media (min-width: 1100px) {
+            .regular-class-grid { grid-template-columns: 1.2fr 0.8fr; }
+        }
+        .regular-curriculum {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 24px; padding: clamp(28px, 3vw, 44px);
+        }
+        .regular-curriculum h3 { font-size: clamp(20px, 2vw, 28px); font-weight: 800; margin-bottom: 24px; }
+        .curriculum-week {
+            display: flex; align-items: flex-start; gap: 16px;
+            padding: 16px 0; border-bottom: 1px solid var(--border-subtle);
+        }
+        .curriculum-week:last-child { border-bottom: none; }
+        .week-num {
+            flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-en); font-size: 14px; font-weight: 800;
+            background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--neon-mint);
+        }
+        .curriculum-week.mk .week-num {
+            background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.2); color: var(--neon-rose);
+        }
+        .week-info h4 { font-size: clamp(15px, 1.2vw, 18px); font-weight: 700; margin-bottom: 4px; }
+        .week-info p { font-size: clamp(12px, 0.9vw, 14px); color: var(--text-secondary); }
+
+        .regular-cta-card {
+            background: var(--bg-card); border: 1px solid rgba(244, 63, 94, 0.2);
+            border-radius: 24px; padding: clamp(28px, 3vw, 44px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center;
+        }
+        .regular-cta-card h3 { font-size: clamp(22px, 2.2vw, 32px); font-weight: 900; margin-bottom: 12px; }
+        .regular-cta-card .price-tag {
+            font-size: clamp(14px, 1.2vw, 18px); color: var(--text-secondary);
+            margin-bottom: 28px; line-height: 1.6;
+        }
+        .regular-cta-card .naver-note {
+            font-size: 12px; color: var(--text-muted); margin-top: 16px;
+        }
+
+        /* ══════════════════════════════════════════════
+           FOOTER
+           ══════════════════════════════════════════════ */
+        .footer { text-align: center; padding: 40px var(--section-px); border-top: 1px solid var(--border-subtle); }
+        .footer p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+        /* ══════════════════════════════════════════════
+           TOAST / MODAL / ADMIN (기존 유지 + 개선)
+           ══════════════════════════════════════════════ */
+        .toast-container { position: fixed; top: 80px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast {
+            background: var(--bg-card); border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 14px; padding: 16px 24px; display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); animation: toast-in 0.4s ease-out;
+            min-width: 300px; max-width: 420px;
+        }
+        .toast.success { border-color: rgba(16, 185, 129, 0.4); }
+        .toast.error { border-color: rgba(244, 63, 94, 0.4); }
+        .toast.removing { animation: toast-out 0.4s ease-in forwards; }
+        .toast-icon { font-size: 24px; flex-shrink: 0; }
+        .toast-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .toast-message { font-size: 12px; color: var(--text-secondary); }
+
+        /* 신청 완료 모달 */
+        .completion-modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            z-index: 5000; display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .completion-modal-overlay.active { display: flex; }
+        .completion-modal {
+            background: var(--bg-card); border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 28px; padding: clamp(32px, 4vw, 52px); text-align: center;
+            max-width: 520px; width: 100%; position: relative;
+            animation: fadeInScale 0.4s ease-out;
+        }
+        .completion-modal .check-circle {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: rgba(16, 185, 129, 0.15); border: 2px solid var(--neon-mint);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; margin: 0 auto 20px;
+        }
+        .completion-modal h3 { font-size: clamp(22px, 2.5vw, 30px); font-weight: 900; margin-bottom: 12px; }
+        .completion-modal .modal-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 28px; }
+        .completion-modal .modal-info {
+            background: var(--bg-primary); border-radius: 14px; padding: 20px; margin-bottom: 28px;
+            text-align: left; font-size: 13px; color: var(--text-secondary); line-height: 1.8;
+        }
+        .completion-modal .modal-info strong { color: var(--text-primary); }
+        .completion-modal .modal-actions { display: flex; flex-direction: column; gap: 12px; }
+        .completion-modal .close-modal-btn {
+            background: none; border: none; color: var(--text-muted); font-size: 12px;
+            cursor: pointer; margin-top: 8px; font-family: var(--font-kr);
+        }
+        .completion-modal .close-modal-btn:hover { color: var(--text-primary); }
+
+        /* Admin */
+        .admin-trigger {
+            position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px;
+            border-radius: 14px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-subtle);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 900; transition: all 0.3s ease; font-size: 20px; opacity: 0.4;
+        }
+        .admin-trigger:hover { opacity: 1; border-color: var(--neon-mint); box-shadow: var(--glow-mint); transform: rotate(90deg); }
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px); z-index: 2000; display: none;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-password {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 100%;
+        }
+        .modal-password h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .modal-password p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+        .password-input {
+            width: 100%; padding: 14px; background: var(--bg-primary); border: 1px solid var(--border-subtle);
+            border-radius: 12px; color: var(--text-primary); font-size: 24px; font-family: var(--font-en);
+            text-align: center; letter-spacing: 0.3em; outline: none; margin-bottom: 16px; transition: all 0.3s ease;
+        }
+        .password-input:focus { border-color: var(--neon-mint); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+        .password-input.error { border-color: var(--neon-rose); animation: shake 0.5s ease; }
+
+        .admin-dashboard {
+            position: fixed; inset: 0; background: var(--bg-primary);
+            z-index: 3000; display: none; flex-direction: column; overflow: hidden;
+        }
+        .admin-dashboard.active { display: flex; }
+        .admin-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px; background: var(--bg-card);
+            border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
+        }
+        .admin-header h2 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .admin-close {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.2);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 18px; color: var(--neon-rose); transition: all 0.3s ease;
+        }
+        .admin-close:hover { background: rgba(244, 63, 94, 0.2); border-color: var(--neon-rose); }
+        .admin-tabs {
+            display: flex; background: var(--bg-card); border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0; padding: 0 24px; overflow-x: auto;
+        }
+        .admin-tab {
+            padding: 14px 20px; font-size: 13px; font-weight: 600; color: var(--text-muted);
+            cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.3s ease;
+            font-family: var(--font-kr); background: none; border-top: none; border-left: none; border-right: none; white-space: nowrap;
+        }
+        .admin-tab.active { color: var(--neon-mint); border-bottom-color: var(--neon-mint); }
+        .admin-tab:hover { color: var(--text-primary); }
+        .admin-content { flex: 1; overflow-y: auto; padding: 24px; }
+        .admin-panel { display: none; max-width: 1100px; }
+        .admin-panel.active { display: block; }
+        .config-session-group {
+            background: var(--bg-card-alt); border: 1px solid var(--border-subtle);
+            border-radius: 16px; padding: 24px; margin-bottom: 20px;
+        }
+        .config-session-group h4 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--neon-cyan); display: flex; align-items: center; gap: 8px; }
+        .config-session-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .config-input-wrap label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+        .config-input-wrap input, .config-input-wrap textarea {
+            width: 100%; padding: 10px 12px; background: var(--bg-primary); border: 1px solid var(--border-subtle);
+            border-radius: 8px; color: var(--text-primary); font-size: 13px; font-family: var(--font-kr);
+            outline: none; transition: all 0.3s ease;
+        }
+        .config-input-wrap input:focus, .config-input-wrap textarea:focus { border-color: var(--neon-mint); box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1); }
+        .config-input-wrap textarea { resize: vertical; min-height: 60px; }
+        .config-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .config-field { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px; }
+        .config-field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .config-field input { width: 100%; padding: 12px 14px; background: var(--bg-primary); border: 1px solid var(--border-subtle); border-radius: 10px; color: var(--text-primary); font-size: 14px; font-family: var(--font-kr); outline: none; transition: all 0.3s ease; }
+        .config-field input:focus { border-color: var(--neon-mint); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+        .config-actions { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+        /* Syllabus Editor */
+        .syllabus-editor-list { display: flex; flex-direction: column; gap: 16px; }
+        .syllabus-editor-item { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; }
+        .syllabus-editor-item .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .syllabus-editor-item .item-header h4 { font-size: 14px; font-weight: 700; color: var(--neon-cyan); }
+        .syllabus-editor-item .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .syllabus-editor-item .field-full { margin-bottom: 12px; }
+        .syllabus-editor-item label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+        .syllabus-editor-item input, .syllabus-editor-item textarea {
+            width: 100%; padding: 10px 12px; background: var(--bg-primary); border: 1px solid var(--border-subtle);
+            border-radius: 8px; color: var(--text-primary); font-size: 13px; font-family: var(--font-kr); outline: none; transition: all 0.3s ease;
+        }
+        .syllabus-editor-item input:focus, .syllabus-editor-item textarea:focus { border-color: var(--neon-mint); }
+        .syllabus-editor-item textarea { resize: vertical; min-height: 70px; }
+        .marketing-toggle { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: var(--text-muted); cursor: pointer; }
+        .marketing-toggle input[type="checkbox"] { accent-color: var(--neon-rose); cursor: pointer; }
+        .remove-chapter-btn { padding: 4px 12px; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.2); border-radius: 8px; color: var(--neon-rose); font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-kr); transition: all 0.3s ease; }
+        .remove-chapter-btn:hover { background: rgba(244, 63, 94, 0.3); }
+        .add-chapter-btn { width: 100%; padding: 14px; border: 2px dashed rgba(16, 185, 129, 0.3); border-radius: 14px; background: transparent; color: var(--neon-mint); font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font-kr); transition: all 0.3s ease; }
+        .add-chapter-btn:hover { background: rgba(16, 185, 129, 0.05); border-color: var(--neon-mint); }
+
+        /* CRM */
+        .crm-stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+        .crm-stat-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px 28px; min-width: 160px; }
+        .crm-stat-card .stat-value { font-family: var(--font-en); font-size: 32px; font-weight: 800; color: var(--neon-mint); }
+        .crm-stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .lead-table-wrapper { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; overflow: hidden; }
+        .lead-table { width: 100%; border-collapse: collapse; }
+        .lead-table th { padding: 14px 16px; text-align: left; font-size: 12px; font-weight: 600; color: var(--text-muted); background: rgba(148, 163, 184, 0.05); border-bottom: 1px solid var(--border-subtle); }
+        .lead-table td { padding: 12px 16px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid rgba(148, 163, 184, 0.05); }
+        .lead-table tr:hover td { background: rgba(16, 185, 129, 0.03); }
+        .lead-type-badge { display: inline-flex; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .lead-type-badge.free { background: rgba(16, 185, 129, 0.1); color: var(--neon-mint); }
+        .lead-type-badge.premium { background: rgba(244, 63, 94, 0.1); color: var(--neon-rose-light); }
+        .delete-lead-btn { padding: 6px 14px; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.2); border-radius: 8px; color: var(--neon-rose); font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font-kr); transition: all 0.3s ease; }
+        .delete-lead-btn:hover { background: rgba(244, 63, 94, 0.2); border-color: var(--neon-rose); }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+
+        /* ══════════════════════════════════════════════
+           RESPONSIVE
+           ══════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; padding-top: 80px; }
+            .config-session-row { grid-template-columns: 1fr; }
+            .syllabus-editor-item .field-row { grid-template-columns: 1fr; }
+            .lead-table-wrapper { overflow-x: auto; }
+            .lead-table { min-width: 600px; }
+            .crm-stats { flex-direction: column; }
+            .regular-class-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .scarcity-cta { display: none; }
+            .hero-cta-group { flex-direction: column; width: 100%; }
+            .hero-cta-group a, .hero-cta-group button { width: 100%; justify-content: center; }
+            .countdown-unit { min-width: 56px; padding: 10px 6px; }
+            .funnel-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 320px) {
+            .countdown-grid { gap: 4px; }
+            .countdown-unit { min-width: 48px; padding: 8px 4px; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-card-hover); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <!-- ══════ SCARCITY BANNER ══════ -->
+    <div class="scarcity-banner">
+        <div class="scarcity-inner">
+            <span class="scarcity-text">⚡ 좌석수 제한으로 <strong>조기마감</strong>될 수 있습니다 — <span id="scarcity-seats"></span></span>
+            <span class="scarcity-urgent" id="scarcity-urgent">🚨 마감임박</span>
+            <a href="#funnel-section" class="scarcity-cta">좌석 확보하기 →</a>
+        </div>
+    </div>
+
+    <!-- ══════ HERO — WIDE SPLIT LAYOUT ══════ -->
+    <section class="hero" id="hero-section">
+        <!-- 좌측: 텍스트 -->
+        <div class="hero-text">
+            <span class="hero-label">OFFLINE · FACE TO FACE · FREE</span>
+            <h1 class="hero-title"><span style="color:var(--neon-cyan);">경남/부산</span><br><span class="accent-rose">쇼피 실전 대면<br>무료강의</span></h1>
+            <p class="hero-subtitle">
+                쇼피에서 직접 브랜드를 굴리며 판을 짜본<br>
+                <strong>실전 플레이어가 알려주는 판매 프로세스</strong>
+            </p>
+            <div class="hero-cta-group">
+                <a href="#funnel-section" class="btn-primary">무료 좌석 예약 신청 →</a>
+                <a href="#funnel-section" class="btn-rose">📋 수강신청하기</a>
+            </div>
+            <p style="margin-top:16px; font-size:clamp(13px,1vw,15px); color:var(--text-secondary); display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                📞 신청 전 궁금한 점이 있으신가요? 빠르게 상담해 드리겠습니다. <a href="tel:010-5701-1167" style="color:var(--neon-mint-light); font-weight:700; text-decoration:underline;">TEL: 010-5701-1167</a>
+            </p>
+        </div>
+
+        <!-- 우측: 카드 -->
+        <div class="hero-right">
+            <div class="hero-card date-card anim-scroll" id="session1-card">
+                <span class="card-label"><span class="icon">📅</span><span class="font-en">SESSION 1</span></span>
+                <div class="card-value" id="rendered-date1">2026년 7월 25일 (토)</div>
+                <div class="card-time" id="rendered-time1">오후 2시 ~ 오후 5시 (총 3시간)</div>
+                <div class="card-sub" id="rendered-seats1" style="margin-top:8px;color:var(--neon-mint-light);font-weight:700;font-size:clamp(20px,2vw,28px);"></div>
+            </div>
+            <div class="hero-card date-card session-2 anim-scroll" id="session2-card">
+                <span class="card-label"><span class="icon">📅</span><span class="font-en">SESSION 2</span></span>
+                <div class="card-value" id="rendered-date2"></div>
+                <div class="card-time" id="rendered-time2"></div>
+                <div class="card-sub" id="rendered-seats2" style="margin-top:8px;color:var(--neon-mint-light);font-weight:700;font-size:clamp(20px,2vw,28px);"></div>
+            </div>
+            <div class="hero-card loc-card anim-scroll">
+                <span class="card-label"><span class="icon">📍</span><span class="font-en">SEMINAR LOCATION</span></span>
+                <div class="card-value" id="rendered-loc">서울 강남역 인근 대면 전용 강의실</div>
+                <div class="card-sub" id="rendered-subloc">(수강 확정자 한정 오시는 길 개별 안심 약도 전송)</div>
+            </div>
+        </div>
+
+        <!-- 카운트다운 (Wide에선 전체 폭 차지) -->
+        <div class="countdown-section anim-scroll" id="countdown-wrap">
+            <div class="countdown-label font-en">TIME REMAINING</div>
+            <div class="countdown-grid" id="countdown-grid">
+                <div class="countdown-unit"><div class="countdown-number font-en" id="cd-days">00</div><div class="countdown-desc font-en">Days</div></div>
+                <div class="countdown-unit"><div class="countdown-number font-en" id="cd-hours">00</div><div class="countdown-desc font-en">Hours</div></div>
+                <div class="countdown-unit"><div class="countdown-number font-en" id="cd-mins">00</div><div class="countdown-desc font-en">Minutes</div></div>
+                <div class="countdown-unit"><div class="countdown-number font-en" id="cd-secs">00</div><div class="countdown-desc font-en">Seconds</div></div>
+            </div>
+            <div class="countdown-expired" id="countdown-expired">
+                <div class="expired-text">🔒 신청이 마감되었습니다</div>
+                <div class="expired-sub">다음 강의 일정이 공개되면 이 자리에서 다시 안내드리겠습니다.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ RISK REVERSAL ══════ -->
+    <section class="fluid-section" id="safeguard-section">
+        <div class="fluid-inner">
+            <span class="section-eyebrow">🛡️ <span class="font-en">RISK REVERSAL</span></span>
+            <h2 class="section-title">무료강의는 <span style="color: var(--neon-cyan)">수강내용과 강사수준</span>을 확인하는 자리입니다.</h2>
+            <p class="section-desc" style="max-width:none;">"비싼 돈 내고 이해 못 하면 어쩌지?" — 그래서 무료강의를 먼저 준비했습니다. 직접 보고, 듣고, 확인한 뒤 결정하세요.</p>
+            <div class="safeguard-grid">
+                <div class="safeguard-card anim-scroll"><div class="safeguard-icon">💰</div><h4>무료강의, 부담 제로</h4><p>본 대면 특강은 100% 무료로 진행됩니다. 수강비, 자료비, 숨겨진 비용 일절 없으며 오직 여러분의 시간 투자만 필요합니다.</p></div>
+                <div class="safeguard-card anim-scroll"><div class="safeguard-icon">🎯</div><h4>1:1 현장 밀착 질의응답</h4><p>소수정예 한정으로 진행되어 대형 강의처럼 일방적으로 듣기만 하는 구조가 아닙니다. 궁금한 것은 즉시 현장에서 해결됩니다.</p></div>
+                <div class="safeguard-card anim-scroll"><div class="safeguard-icon">🔬</div><h4>현직 솔루션 아키텍트 직강</h4><p>이론만 가르치는 강사가 아닌, 쇼피 ERP/정산 시스템을 직접 설계하고 운영 중인 현직 아키텍트가 실전 노하우를 전수합니다.</p></div>
+                <div class="safeguard-card anim-scroll"><div class="safeguard-icon">♾️</div><h4>평생 비공개 커뮤니티 개방</h4><p>강의 종료 후에도 평생 이용 가능한 정회원 전용 비공개 카페에서 지속적인 정보 공유와 업데이트를 받으실 수 있습니다.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ SYLLABUS (무료강의 목차) ══════ -->
+    <section class="fluid-section" id="syllabus-section">
+        <div class="fluid-inner">
+            <span class="section-eyebrow">📚 <span class="font-en">FREE LECTURE SYLLABUS</span></span>
+            <h2 class="section-title">실전 <span style="color: var(--neon-mint)">무료강의</span> 목차</h2>
+            <p class="section-desc">단순한 쇼피 사이트 가입 방법 나열이 아닙니다. 데이터 설계부터 마케팅 독점 프로세스까지, 현역 아키텍트의 실전 시스템을 직접 이식받는 과정입니다.</p>
+            <div class="syllabus-grid" id="syllabus-container"></div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ VVIP SECRET WEAPONS ══════ -->
+    <section class="fluid-section" id="vvip-section">
+        <div class="fluid-inner">
+            <span class="section-eyebrow">🔐 <span class="font-en">SECRET WEAPONS</span></span>
+            <h2 class="section-title">수강생 <span style="color: var(--neon-mint)">VVIP 전용</span> 독점 혜택</h2>
+            <p class="section-desc">단순 강의 수료를 넘어, 실전 셀링에 즉시 투입 가능한 무기와 평생 지원 네트워크를 함께 드립니다.</p>
+            <div class="vvip-grid">
+                <div class="vvip-card calc-card anim-scroll">
+                    <span class="vvip-badge mint">⚡ LIFETIME LICENSE</span>
+                    <h3>초정밀 마진 계산 시스템</h3>
+                    <p class="desc">동남아 5개국 각기 다른 수수료 체계·환율·세금 변동을 10원 단위까지 역산하여 절대 역마진이 발생하지 않도록 설계된 독자 솔루션입니다.</p>
+                    <ul class="vvip-feature-list">
+                        <li><span class="check mint">✓</span>국가별 세금·수수료 자동 역산 엔진</li>
+                        <li><span class="check mint">✓</span>환율 변동 실시간 마진 보정 시스템</li>
+                        <li><span class="check mint">✓</span>무제한 업데이트 평생 라이선스 지원</li>
+                        <li><span class="check mint">✓</span>원가 대비 순이익률 자동 리포팅</li>
+                    </ul>
+                    <div class="classified-overlay"><div class="lock-icon">🔒</div><p>구동 화면은 수강생 전용으로 비공개 처리되어 있습니다.<br>무료강의에서 핵심 작동 원리를 미리 확인하실 수 있습니다.</p></div>
+                </div>
+                <div class="vvip-card cafe-card anim-scroll">
+                    <span class="vvip-badge purple">👑 LIFETIME ACCESS</span>
+                    <h3>정회원 전용 비공개 평생 카페</h3>
+                    <p class="desc">수강 완료 후에도 끊기지 않는 지원 체계. 최신 쇼피 정책 변경, 실전 소싱 정보, 수익 인증 등 현직 셀러들만의 비공개 정보가 실시간 공유됩니다.</p>
+                    <ul class="vvip-feature-list">
+                        <li><span class="check purple">✓</span>쇼피 정책 변경 실시간 알림 및 대응 가이드</li>
+                        <li><span class="check purple">✓</span>현직 셀러 수익 인증 & 전략 공유</li>
+                        <li><span class="check purple">✓</span>1:1 맞춤 컨설팅 우선 예약권</li>
+                        <li><span class="check purple">✓</span>신규 마케팅 전략 선공개 & 베타 테스트</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════ DUAL-TRACK FUNNEL (무료강의 신청) ══════ -->
+    <section class="fluid-section" id="funnel-section">
+        <div class="fluid-inner">
+            <span class="section-eyebrow">🚀 <span class="font-en">APPLY NOW</span></span>
+            <h2 class="section-title">나에게 맞는 <span style="color: var(--neon-mint)">트랙을 선택</span>하세요</h2>
+            <p class="section-desc">부담 없이 무료강의로 먼저 경험하거나, 확실한 결심이 서셨다면 5인 정예 정규 클래스 사전 선발에 바로 지원하세요.</p>
+            <div class="funnel-grid">
+                <div class="funnel-card track-a">
+                    <span class="track-label font-en">TRACK A · FREE</span>
+                    <h3>대면 무료강의 좌석 예약</h3>
+                    <p class="funnel-desc">오프라인 무료 특강에 참석하여 쇼피 실전 셀링의 핵심 메커니즘을 직접 확인하세요.</p>
+                    <form id="free-form" autocomplete="off">
+                        <input type="hidden" id="free-session" value="1">
+                        <div id="session-picker-container"></div>
+                        <div class="form-group"><label>성함 *</label><input type="text" id="free-name" placeholder="홍길동" required></div>
+                        <div class="form-group"><label>연락처 *</label><input type="tel" id="free-phone" placeholder="010-0000-0000" required></div>
+                        <div class="form-group"><label>이메일 *</label><input type="email" id="free-email" placeholder="example@email.com" required></div>
+                        <button type="submit" class="submit-btn mint" id="free-submit-btn">🎟️ 무료 좌석 예약 확정하기</button>
+                        <p class="form-note">예약 확정 즉시 입력하신 이메일로 오시는 길 안내가 발송됩니다.</p>
+                    </form>
+                </div>
+                <div class="funnel-card track-b" style="border-color: rgba(16, 185, 129, 0.2);">
+                    <span class="track-label font-en" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3);color:var(--neon-mint-light);">TRACK B · REGULAR CLASS</span>
+                    <h3>정규 과정 수강 신청</h3>
+                    <p class="funnel-desc">소수정예 5인 한정 실전 마스터 클래스. 4주간의 집중 과정으로 완전히 내 것으로 만드세요.</p>
+                    <div style="margin-bottom:20px;">
+                        <div class="curriculum-week"><div class="week-num font-en">W1</div><div class="week-info"><h4>메커니즘 & 마진 설계</h4><p>쇼피 유통 해체, GTX·부가세 역산 공식, 5개국 변동 마진 정복</p></div></div>
+                        <div class="curriculum-week"><div class="week-num font-en">W2</div><div class="week-info"><h4>인프라 구축 & 브랜딩</h4><p>무결 가입 통과, 샵 최적화 레이아웃, 킬러 상품 소싱 공식</p></div></div>
+                        <div class="curriculum-week mk"><div class="week-num font-en">W3</div><div class="week-info"><h4>마케팅 시스템 Part 1</h4><p>Shopee Ads 최적화, Flash Deals, Chat Broadcast, Affiliate 마케팅</p></div></div>
+                        <div class="curriculum-week mk"><div class="week-num font-en">W4</div><div class="week-info"><h4>메가 캠페인 완벽 지배</h4><p>바우처 믹싱, Off-Platform Ads, CAMPAIGN 입점 치트키</p></div></div>
+                    </div>
+                    <div style="margin-top:auto;">
+                        <a href="#" class="btn-primary" id="naver-pay-btn" target="_blank" style="width:100%;justify-content:center;font-size:17px;padding:18px;background:var(--neon-mint);color:var(--bg-card);">💚 수강신청하기</a>
+                        <p class="form-note" style="text-align:center;">네이버페이 안전결제로 진행됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"><p>본 강의는 소수정예 오프라인 대면으로만 진행됩니다.<br>© 2026 쇼피 실전 마스터 클래스. All Rights Reserved.</p></footer>
+
+    <!-- TOAST -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 신청 완료 모달 -->
+    <div class="completion-modal-overlay" id="completion-modal">
+        <div class="completion-modal">
+            <div class="check-circle">✅</div>
+            <h3>무료강의 예약 완료!</h3>
+            <p class="modal-desc">좌석이 성공적으로 확보되었습니다. 아래 정보를 꼭 확인해 주세요.</p>
+            <div class="modal-info" id="modal-info-content">
+                <strong>■ 일정:</strong> <span id="modal-date"></span><br>
+                <strong>■ 장소:</strong> <span id="modal-loc"></span><br>
+                <strong>■ 안내:</strong> <span id="modal-subloc"></span><br>
+                <strong>■ 잔여 좌석:</strong> <span id="modal-seats" style="color:var(--neon-mint-light);font-weight:800;"></span>
+            </div>
+            <div class="modal-actions">
+                <button class="close-modal-btn" onclick="closeCompletionModal()">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN TRIGGER -->
+    <div class="admin-trigger" id="admin-trigger" title="관리자">⚙️</div>
+
+    <!-- PASSWORD MODAL -->
+    <div class="modal-overlay" id="password-modal">
+        <div class="modal-password">
+            <h3>🔐 관리자 인증</h3><p>패스코드를 입력하세요</p>
+            <input type="password" class="password-input" id="password-input" maxlength="4" placeholder="••••" autocomplete="off">
+            <button class="btn-primary" onclick="verifyPassword()" style="width:100%;">인증하기</button><br><br>
+            <button class="btn-secondary" onclick="closePasswordModal()" style="width:100%;font-size:13px;">취소</button>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div class="admin-dashboard" id="admin-dashboard">
+        <div class="admin-header"><h2>⚡ CRM 관리자 콘솔</h2><button class="admin-close" onclick="closeDashboard()">✕</button></div>
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-panel="config-panel" onclick="switchTab(this)">📝 강의 정보</button>
+            <button class="admin-tab" data-panel="syllabus-panel" onclick="switchTab(this)">📚 목차 편집</button>
+            <button class="admin-tab" data-panel="leads-panel" onclick="switchTab(this)">📊 지원자 (<span id="lead-count-tab">0</span>)</button>
+        </div>
+        <div class="admin-content">
+            <!-- 강의 정보 -->
+            <div class="admin-panel active" id="config-panel">
+                <div class="config-session-group">
+                    <h4>📅 세션 1 (필수)</h4>
+                    <div class="config-session-row">
+                        <div class="config-input-wrap"><label>날짜 (표시용)</label><input type="text" id="cfg-date1" placeholder="2026년 7월 25일 (토)"></div>
+                        <div class="config-input-wrap"><label>시간 (표시용)</label><input type="text" id="cfg-time1" placeholder="오후 2시 ~ 오후 5시 (총 3시간)"></div>
+                    </div>
+                    <div class="config-session-row">
+                        <div class="config-input-wrap"><label>⏱️ D-Day 기준 일시</label><input type="datetime-local" id="cfg-countdown1"></div>
+                        <div class="config-input-wrap"><label>💺 세션 1 좌석 수</label><input type="number" id="cfg-seatLimit1" placeholder="30" min="1"></div>
+                    </div>
+                </div>
+                <div class="config-session-group">
+                    <h4>📅 세션 2 (선택 — 비워두면 숨김)</h4>
+                    <div class="config-session-row">
+                        <div class="config-input-wrap"><label>날짜</label><input type="text" id="cfg-date2" placeholder=""></div>
+                        <div class="config-input-wrap"><label>시간</label><input type="text" id="cfg-time2" placeholder=""></div>
+                    </div>
+                    <div class="config-session-row">
+                        <div class="config-input-wrap"><label>⏱️ D-Day 기준 일시</label><input type="datetime-local" id="cfg-countdown2"></div>
+                        <div class="config-input-wrap"><label>💺 세션 2 좌석 수</label><input type="number" id="cfg-seatLimit2" placeholder="30" min="1"></div>
+                    </div>
+                </div>
+                <div class="config-grid">
+                    <div class="config-field"><label>📍 장소명</label><input type="text" id="cfg-loc" placeholder="서울 강남역 인근 대면 전용 강의실"></div>
+                    <div class="config-field"><label>🗺️ 상세 주소 / 약도 안내</label><input type="text" id="cfg-subloc" placeholder="(수강 확정자 한정 약도 전송)"></div>
+                    <div class="config-field"><label>🔑 Web3Forms Key</label><input type="text" id="cfg-web3key" placeholder="Access Key"></div>
+
+                    <div class="config-field"><label>💚 네이버페이 결제 URL</label><input type="text" id="cfg-naverPayUrl" placeholder="https://smartstore.naver.com/..."></div>
+                </div>
+                <div class="config-actions">
+                    <button class="btn-primary" onclick="saveConfig()">💾 저장 및 동기화</button>
+                    <button class="btn-secondary" onclick="resetConfig()">🔄 초기값 복원</button>
+                </div>
+            </div>
+            <!-- 목차 편집 -->
+            <div class="admin-panel" id="syllabus-panel">
+                <div class="syllabus-editor-list" id="syllabus-editor-list"></div><br>
+                <button class="add-chapter-btn" onclick="addChapter()">+ 새 챕터 추가</button>
+                <div class="config-actions">
+                    <button class="btn-primary" onclick="saveSyllabus()">💾 목차 저장</button>
+                    <button class="btn-secondary" onclick="resetSyllabus()">🔄 기본 목차 복원</button>
+                </div>
+            </div>
+            <!-- 지원자 관리 -->
+            <div class="admin-panel" id="leads-panel">
+                <div class="crm-stats">
+                    <div class="crm-stat-card"><div class="stat-value font-en" id="stat-total">0</div><div class="stat-label">전체</div></div>
+                    <div class="crm-stat-card"><div class="stat-value font-en" id="stat-free" style="color:var(--neon-mint)">0</div><div class="stat-label">무료강의</div></div>
+                    <div class="crm-stat-card"><div class="stat-value font-en" id="stat-premium" style="color:var(--neon-rose)">0</div><div class="stat-label">정규 선발</div></div>
+                </div>
+                <div class="lead-table-wrapper">
+                    <table class="lead-table"><thead><tr><th>#</th><th>유형</th><th>성함</th><th>연락처</th><th>이메일</th><th>신청 일정</th><th>접수</th><th>관리</th></tr></thead><tbody id="lead-tbody"></tbody></table>
+                </div>
+                <div class="empty-state" id="empty-leads" style="display:none;"><div class="icon">📭</div><p>아직 접수된 지원자가 없습니다.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ━━━ DEFAULTS ━━━
+    const DEFAULT_CONFIG = {
+        date1:"2026년 7월 25일 (토)", time1:"오후 2시 ~ 오후 5시 (총 3시간)", countdown1:"2026-07-25T14:00:00", seatLimit1:30,
+        date2:"", time2:"", countdown2:"", seatLimit2:30,
+        loc:"서울 강남역 인근 대면 전용 강의실", subloc:"(수강 확정자 한정 오시는 길 개별 안심 약도 전송)",
+        web3key:"", naverPayUrl:""
+    };
+    const DEFAULT_SYLLABUS = [
+        { badge:"CHAPTER 01", weekLabel:"1주차", isMarketing:false, title:"메커니즘 & 마진 설계", subtitle:"\"쇼피의 유통 흐름을 완벽히 정복하여 10원 단위의 리스크까지 사전에 지워내는 첫 단계\"", bullets:["쇼피 셀러-고객 간 3자 유통망 완벽 해체","글로벌 세금 종류(GTX, 부가세) 및 역산 공식","동남아 5개국 변동 마진 완벽 정복","정회원 전용 미공개 카페 승인 및 개방"] },
+        { badge:"CHAPTER 02", weekLabel:"2주차", isMarketing:false, title:"인프라 구축 & 브랜딩", subtitle:"\"가입 통과부터 이탈 없는 고전환 디자인 샵 세팅까지 한 번에 완료\"", bullets:["쇼피 & 페이오니아 무결 가입 통과 가이드","신뢰도를 대폭 높이는 샵 최적화 레이아웃","데이터 기반 1차 킬러 상품 소싱 공식"] },
+        { badge:"CHAPTER 03", weekLabel:"3주차 · 핵심 마케팅", isMarketing:true, title:"내부 트래픽 독점 & 마케팅 시스템 Part 1", subtitle:"\"수수료 부담을 뛰어넘고 내부 알고리즘을 해킹해 구매 전환율을 극대화하는 마케팅 설계\"", bullets:["최소 비용 고효율 쇼피 키워드 광고(Shopee Ads) 최적화","타임세일 트래픽을 가두는 My Shop's Flash Deals 운영 기밀","재구매율을 끌어올리는 다이렉트 Chat Broadcast 마케팅","글로벌 인플루언서 제휴 Affiliate 마케팅 시스템 설계"] },
+        { badge:"CHAPTER 04", weekLabel:"4주차 · 핵심 마케팅 락인", isMarketing:true, title:"메가 캠페인 & 고전환 프로모션 완벽 지배", subtitle:"\"단골을 자석처럼 끌어당기는 바우처 믹싱과 외부 트래픽, 메가 캠페인 입점 전략의 마케팅 완전판\"", bullets:["타겟 맞춤형 바우처(Shop/Private/Follow Prize) 락인 믹스","구매 장애물을 허무는 Shipping Fee Promotion 설계","메타·구글 트래픽을 샵 체급으로 연계하는 Off-Platform Ads","쇼피 공식 노출·할인·참여 CAMPAIGN 입점 합격 치트키"] }
+    ];
+    let appConfig={...DEFAULT_CONFIG}, syllabus=JSON.parse(JSON.stringify(DEFAULT_SYLLABUS));
+
+    // ━━━ LOAD/SAVE ━━━
+    function loadConfig(){
+        try{ const s=localStorage.getItem('shopee_lecture_config'); if(s) appConfig={...DEFAULT_CONFIG,...JSON.parse(s)}; }catch(e){}
+        try{ const s=localStorage.getItem('shopee_syllabus'); if(s) syllabus=JSON.parse(s); }catch(e){}
+        renderAll();
+    }
+    function saveConfigLS(){ try{localStorage.setItem('shopee_lecture_config',JSON.stringify(appConfig));}catch(e){} }
+    function saveSyllabusLS(){ try{localStorage.setItem('shopee_syllabus',JSON.stringify(syllabus));}catch(e){} }
+
+    function renderAll(){ renderConfig(); renderSyllabus(); updateScarcity(); updateNaverPay(); }
+
+    function getSeatsRemaining(sessionNum){
+        const leads=getLeads().filter(l=>l.type==='free'&&l.session==sessionNum);
+        const limit=sessionNum==1?appConfig.seatLimit1:appConfig.seatLimit2;
+        return Math.max(0,(limit||30)-leads.length);
+    }
+    function renderConfig(){
+        document.getElementById('rendered-date1').textContent=appConfig.date1;
+        document.getElementById('rendered-time1').textContent=appConfig.time1;
+        document.getElementById('rendered-loc').textContent=appConfig.loc;
+        document.getElementById('rendered-subloc').textContent=appConfig.subloc;
+        // 세션 1 잔여 좌석
+        const r1=getSeatsRemaining(1);
+        document.getElementById('rendered-seats1').textContent=r1>0?`💺 잔여 ${r1}석`:'🔒 마감';
+        document.getElementById('rendered-seats1').style.color=r1<=2?'var(--neon-rose)':'var(--neon-mint-light)';
+        // 세션 2
+        const s2=document.getElementById('session2-card');
+        const hasS2=appConfig.date2&&appConfig.date2.trim();
+        if(hasS2){
+            s2.classList.add('active');
+            document.getElementById('rendered-date2').textContent=appConfig.date2;
+            document.getElementById('rendered-time2').textContent=appConfig.time2;
+            const r2=getSeatsRemaining(2);
+            document.getElementById('rendered-seats2').textContent=r2>0?`💺 잔여 ${r2}석`:'🔒 마감';
+            document.getElementById('rendered-seats2').style.color=r2<=2?'var(--neon-rose)':'var(--neon-mint-light)';
+        } else { s2.classList.remove('active'); }
+        // 세션 선택 카드 갱신
+        updateSessionSelector();
+    }
+    function updateSessionSelector(){
+        const container=document.getElementById('session-picker-container');
+        const hiddenInput=document.getElementById('free-session');
+        const hasS2=appConfig.date2&&appConfig.date2.trim();
+        const r1=getSeatsRemaining(1), r2=hasS2?getSeatsRemaining(2):-1;
+        const selected=hiddenInput.value;
+
+        function seatClass(r){ return r<=0?'closed':r<=3?'low':'open'; }
+        function seatText(r){ return r<=0?'마감':r+'석 남음'; }
+
+        let html='<div class="session-picker"><div class="session-picker-label">📅 참석 일정 선택</div>';
+        // Session 1
+        html+=`<div class="session-pick-card${selected=='1'?' selected':''}${r1<=0?' soldout':''}" data-session="1">
+            <div class="session-pick-left">
+                <span class="sp-label">SESSION 1</span>
+                <span class="sp-date">${esc(appConfig.date1)}</span>
+                <span class="sp-time">${esc(appConfig.time1)}</span>
+            </div>
+            <div class="session-pick-right">
+                <div class="sp-seats ${seatClass(r1)}">${seatText(r1)}</div>
+                <div class="sp-status">${r1<=0?'모집 마감':'선착순 모집중'}</div>
+            </div>
+        </div>`;
+        // Session 2
+        if(hasS2){
+            html+=`<div class="session-pick-card${selected=='2'?' selected':''}${r2<=0?' soldout':''}" data-session="2">
+                <div class="session-pick-left">
+                    <span class="sp-label">SESSION 2</span>
+                    <span class="sp-date">${esc(appConfig.date2)}</span>
+                    <span class="sp-time">${esc(appConfig.time2)}</span>
+                </div>
+                <div class="session-pick-right">
+                    <div class="sp-seats ${seatClass(r2)}">${seatText(r2)}</div>
+                    <div class="sp-status">${r2<=0?'모집 마감':'선착순 모집중'}</div>
+                </div>
+            </div>`;
+        }
+        html+='</div>';
+        container.innerHTML=html;
+
+        // 카드 클릭 이벤트
+        container.querySelectorAll('.session-pick-card:not(.soldout)').forEach(card=>{
+            card.addEventListener('click',function(){
+                container.querySelectorAll('.session-pick-card').forEach(c=>c.classList.remove('selected'));
+                this.classList.add('selected');
+                hiddenInput.value=this.dataset.session;
+            });
+        });
+
+        // 현재 선택된 세션이 마감이면 다른 세션으로 자동 전환
+        if(selected=='1'&&r1<=0&&hasS2&&r2>0){ hiddenInput.value='2'; updateSessionSelector(); }
+        else if(selected=='2'&&r2<=0&&r1>0){ hiddenInput.value='1'; updateSessionSelector(); }
+    }
+
+    function updateNaverPay(){
+        const btn=document.getElementById('naver-pay-btn');
+        if(appConfig.naverPayUrl&&appConfig.naverPayUrl.trim()) btn.href=appConfig.naverPayUrl;
+        else btn.href='#';
+    }
+
+    // ━━━ SCARCITY ━━━
+    function updateScarcity(){
+        const r1=getSeatsRemaining(1);
+        const hasS2=appConfig.date2&&appConfig.date2.trim();
+        const r2=hasS2?getSeatsRemaining(2):-1;
+        const el=document.getElementById('scarcity-urgent');
+        const seatsEl=document.getElementById('scarcity-seats');
+        // 잔여석 표시
+        let txt=`세션1: ${r1>0?r1+'석 남음':'마감'}`;
+        if(hasS2) txt+=` | 세션2: ${r2>0?r2+'석 남음':'마감'}`;
+        seatsEl.innerHTML=txt;
+        // 마감임박 (어느 세션이든 2석 이하)
+        if((r1<=2&&r1>=0)||(hasS2&&r2<=2&&r2>=0)) el.classList.add('active');
+        else el.classList.remove('active');
+    }
+
+    // ━━━ COUNTDOWN ━━━
+    let cdInterval=null;
+    function getCountdownTarget(){
+        const now=Date.now(), targets=[];
+        [appConfig.countdown1,appConfig.countdown2].forEach(c=>{ if(c){ const t=new Date(c).getTime(); if(!isNaN(t)) targets.push(t); } });
+        const future=targets.filter(t=>t>now);
+        if(future.length) return Math.min(...future);
+        if(targets.length) return Math.max(...targets);
+        return null;
+    }
+    function startCountdown(){
+        if(cdInterval) clearInterval(cdInterval);
+        function tick(){
+            const target=getCountdownTarget();
+            const grid=document.getElementById('countdown-grid');
+            const expired=document.getElementById('countdown-expired');
+            const expiredText=expired.querySelector('.expired-text');
+            const expiredSub=expired.querySelector('.expired-sub');
+
+            // 좌석 전체 마감 체크
+            const r1=getSeatsRemaining(1);
+            const hasS2=appConfig.date2&&appConfig.date2.trim();
+            const r2=hasS2?getSeatsRemaining(2):0;
+            const allSoldOut=hasS2?(r1<=0&&r2<=0):(r1<=0);
+
+            if(allSoldOut){
+                grid.style.display='none'; expired.classList.add('active');
+                expiredText.textContent='🔒 모든 좌석이 마감되었습니다';
+                expiredSub.textContent='다음 강의 일정이 공개되면 이 자리에서 다시 안내드리겠습니다.';
+                return;
+            }
+
+            if(!target||target-Date.now()<=0){
+                grid.style.display='none'; expired.classList.add('active');
+                expiredText.textContent='🔒 신청이 마감되었습니다';
+                expiredSub.textContent='다음 강의 일정이 공개되면 이 자리에서 다시 안내드리겠습니다.';
+                document.getElementById('cd-days').textContent='00'; document.getElementById('cd-hours').textContent='00';
+                document.getElementById('cd-mins').textContent='00'; document.getElementById('cd-secs').textContent='00';
+                return;
+            }
+            grid.style.display='flex'; expired.classList.remove('active');
+            const diff=target-Date.now();
+            document.getElementById('cd-days').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+            document.getElementById('cd-hours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+            document.getElementById('cd-mins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+            document.getElementById('cd-secs').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+        }
+        tick(); cdInterval=setInterval(tick,1000);
+    }
+
+    // ━━━ SYLLABUS RENDER ━━━
+    function renderSyllabus(){
+        document.getElementById('syllabus-container').innerHTML=syllabus.map(ch=>{
+            const mk=ch.isMarketing, bc=mk?'marketing':'default';
+            return `<div class="syllabus-card ${mk?'marketing-focus':''} anim-scroll visible">
+                <div class="syllabus-header"><span class="chapter-badge ${bc} font-en">${mk?'🔥 ':''}${esc(ch.badge)}</span><span class="week-badge">${esc(ch.weekLabel)}</span></div>
+                <h3 class="syllabus-title">${esc(ch.title)}</h3><p class="syllabus-subtitle">${esc(ch.subtitle)}</p>
+                <ul class="syllabus-bullets">${(ch.bullets||[]).map(b=>`<li>${esc(b)}</li>`).join('')}</ul>
+            </div>`;
+        }).join('');
+    }
+
+    // ━━━ LEADS ━━━
+    function getLeads(){ try{const d=localStorage.getItem('shopee_leads');return d?JSON.parse(d):[];}catch(e){return[];} }
+    function saveLeads(l){ localStorage.setItem('shopee_leads',JSON.stringify(l)); }
+    function addLead(l){ const ls=getLeads(); l.id=Date.now()+'_'+Math.random().toString(36).substr(2,6); l.timestamp=new Date().toLocaleString('ko-KR'); ls.push(l); saveLeads(ls); updateScarcity(); return l; }
+    function deleteLead(id){ saveLeads(getLeads().filter(l=>l.id!==id)); updateScarcity(); }
+
+    // ━━━ WEB3FORMS ━━━
+    async function sendEmail(d){
+        const key=appConfig.web3key;
+        if(!key||!key.trim()) return{success:true,simulated:true};
+        const dateInfo=appConfig.date1+(appConfig.date2?' / '+appConfig.date2:'');
+        const timeInfo=appConfig.time1+(appConfig.time2?' / '+appConfig.time2:'');
+        try{
+            const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({access_key:key,subject:`[예약확정] 쇼피 실전 대면 무료강의 - ${d.name}님`,from_name:'쇼피 실전 마스터 클래스',to:d.email,name:d.name,email:d.email,phone:d.phone,
+                    message:`안녕하세요, ${d.name}님!\n예약 확정되었습니다.\n\n■ 일정: ${dateInfo} (${timeInfo})\n■ 장소: ${appConfig.loc}\n■ 안내: ${appConfig.subloc}`})});
+            return{success:(await r.json()).success,simulated:false};
+        }catch(e){return{success:false,simulated:false};}
+    }
+
+    // ━━━ FORMS ━━━
+    document.getElementById('free-form').addEventListener('submit',async function(e){
+        e.preventDefault();
+        const btn=document.getElementById('free-submit-btn'); btn.disabled=true; btn.innerHTML='⏳ 처리 중...';
+        const sessionNum=document.getElementById('free-session').value;
+        const sessionDate=sessionNum=='1'?appConfig.date1:appConfig.date2;
+        const sessionTime=sessionNum=='1'?appConfig.time1:appConfig.time2;
+        const d={type:'free',session:sessionNum,sessionDate:sessionDate,sessionTime:sessionTime,name:document.getElementById('free-name').value.trim(),phone:document.getElementById('free-phone').value.trim(),email:document.getElementById('free-email').value.trim()};
+        // 좌석 마감 체크
+        const remaining=getSeatsRemaining(sessionNum);
+        if(remaining<=0){
+            showToast('error','신청이 마감되었습니다','선택하신 세션의 좌석이 모두 마감되었습니다.');
+            btn.disabled=false; btn.innerHTML='🎟️ 무료 좌석 예약 확정하기';
+            return;
+        }
+        // 중복 체크
+        const existing=getLeads();
+        const dupName=existing.find(l=>l.name===d.name);
+        const dupPhone=existing.find(l=>l.phone===d.phone);
+        const dupEmail=existing.find(l=>l.email===d.email);
+        if(dupName||dupPhone||dupEmail){
+            let reason=[];
+            if(dupName) reason.push('성함');
+            if(dupPhone) reason.push('연락처');
+            if(dupEmail) reason.push('이메일');
+            showToast('error','이미 등록되었습니다',reason.join(', ')+'이(가) 이미 등록된 정보입니다.');
+            btn.disabled=false; btn.innerHTML='🎟️ 무료 좌석 예약 확정하기';
+            return;
+        }
+        addLead(d);
+        const r=await sendEmail(d);
+        if(r.simulated) showToast('success','예약 확정 (시뮬레이션)',d.name+'님, 좌석이 예약되었습니다.');
+        else if(r.success) showToast('success','예약 확정!',d.name+'님, 이메일로 안내가 발송되었습니다.');
+        else showToast('error','이메일 오류','예약 접수됨. 담당자가 연락드립니다.');
+        // 완료 모달 (잔여 좌석 표시)
+        const afterRemaining=getSeatsRemaining(sessionNum);
+        const sessionLabel=sessionNum=='1'?appConfig.date1:appConfig.date2;
+        document.getElementById('modal-date').textContent=sessionLabel;
+        document.getElementById('modal-loc').textContent=appConfig.loc;
+        document.getElementById('modal-subloc').textContent=appConfig.subloc;
+        document.getElementById('modal-seats').textContent=`SESSION ${sessionNum} — ${afterRemaining}석 남음`;
+        document.getElementById('completion-modal').classList.add('active');
+        renderAll();
+        this.reset(); btn.disabled=false; btn.innerHTML='🎟️ 무료 좌석 예약 확정하기';
+    });
+
+    function closeCompletionModal(){ document.getElementById('completion-modal').classList.remove('active'); }
+    document.getElementById('completion-modal').addEventListener('click',function(e){ if(e.target===this) closeCompletionModal(); });
+
+    // ━━━ TOAST ━━━
+    function showToast(type,title,msg){
+        const c=document.getElementById('toast-container'),t=document.createElement('div');
+        t.className='toast '+type;
+        t.innerHTML=`<span class="toast-icon">${type==='success'?'✅':'⚠️'}</span><div><div class="toast-title">${title}</div><div class="toast-message">${msg}</div></div>`;
+        c.appendChild(t); setTimeout(()=>{t.classList.add('removing');setTimeout(()=>t.remove(),400);},5000);
+    }
+
+    // ━━━ ADMIN ━━━
+    const PASSCODE='0000';
+    document.getElementById('admin-trigger').addEventListener('click',()=>{ document.getElementById('password-modal').classList.add('active'); document.getElementById('password-input').value=''; setTimeout(()=>document.getElementById('password-input').focus(),100); });
+    document.getElementById('password-input').addEventListener('keydown',e=>{if(e.key==='Enter')verifyPassword();});
+    function verifyPassword(){ const i=document.getElementById('password-input'); if(i.value===PASSCODE){closePasswordModal();openDashboard();}else{i.classList.add('error');setTimeout(()=>i.classList.remove('error'),600);i.value='';} }
+    function closePasswordModal(){ document.getElementById('password-modal').classList.remove('active'); }
+    function openDashboard(){ populateConfigFields(); renderSyllabusEditor(); renderLeadsTable(); document.getElementById('admin-dashboard').classList.add('active'); document.body.style.overflow='hidden'; }
+    function closeDashboard(){ document.getElementById('admin-dashboard').classList.remove('active'); document.body.style.overflow=''; }
+    function switchTab(t){ document.querySelectorAll('.admin-tab').forEach(x=>x.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(x=>x.classList.remove('active')); t.classList.add('active'); document.getElementById(t.dataset.panel).classList.add('active'); if(t.dataset.panel==='leads-panel')renderLeadsTable(); if(t.dataset.panel==='syllabus-panel')renderSyllabusEditor(); }
+
+    function toDatetimeLocal(iso){ return iso?iso.slice(0,16):''; }
+    function populateConfigFields(){
+        document.getElementById('cfg-date1').value=appConfig.date1; document.getElementById('cfg-time1').value=appConfig.time1;
+        document.getElementById('cfg-countdown1').value=toDatetimeLocal(appConfig.countdown1);
+        document.getElementById('cfg-date2').value=appConfig.date2||''; document.getElementById('cfg-time2').value=appConfig.time2||'';
+        document.getElementById('cfg-countdown2').value=toDatetimeLocal(appConfig.countdown2);
+        document.getElementById('cfg-loc').value=appConfig.loc; document.getElementById('cfg-subloc').value=appConfig.subloc;
+        document.getElementById('cfg-web3key').value=appConfig.web3key;
+        document.getElementById('cfg-seatLimit1').value=appConfig.seatLimit1||30;
+        document.getElementById('cfg-seatLimit2').value=appConfig.seatLimit2||30;
+        document.getElementById('cfg-naverPayUrl').value=appConfig.naverPayUrl||'';
+    }
+    function saveConfig(){
+        appConfig.date1=document.getElementById('cfg-date1').value.trim(); appConfig.time1=document.getElementById('cfg-time1').value.trim();
+        const cd1=document.getElementById('cfg-countdown1').value; appConfig.countdown1=cd1?cd1+':00':'';
+        appConfig.date2=document.getElementById('cfg-date2').value.trim(); appConfig.time2=document.getElementById('cfg-time2').value.trim();
+        const cd2=document.getElementById('cfg-countdown2').value; appConfig.countdown2=cd2?cd2+':00':'';
+        appConfig.loc=document.getElementById('cfg-loc').value.trim(); appConfig.subloc=document.getElementById('cfg-subloc').value.trim();
+        appConfig.web3key=document.getElementById('cfg-web3key').value.trim();
+        appConfig.seatLimit1=parseInt(document.getElementById('cfg-seatLimit1').value)||30;
+        appConfig.seatLimit2=parseInt(document.getElementById('cfg-seatLimit2').value)||30;
+        appConfig.naverPayUrl=document.getElementById('cfg-naverPayUrl').value.trim();
+        saveConfigLS(); renderAll(); startCountdown();
+        showToast('success','저장 완료','강의 정보가 즉시 동기화되었습니다.');
+    }
+    function resetConfig(){ appConfig={...DEFAULT_CONFIG}; saveConfigLS(); renderAll(); startCountdown(); populateConfigFields(); showToast('success','초기화 완료','기본값으로 복원되었습니다.'); }
+
+    // Syllabus Editor
+    function renderSyllabusEditor(){
+        document.getElementById('syllabus-editor-list').innerHTML=syllabus.map((ch,i)=>`
+            <div class="syllabus-editor-item"><div class="item-header"><h4>📖 #${i+1}</h4><button class="remove-chapter-btn" onclick="removeChapter(${i})">삭제</button></div>
+            <div class="field-row"><div><label>배지</label><input value="${escA(ch.badge)}" onchange="syllabus[${i}].badge=this.value"></div><div><label>주차</label><input value="${escA(ch.weekLabel)}" onchange="syllabus[${i}].weekLabel=this.value"></div></div>
+            <div class="field-full"><label>제목</label><input value="${escA(ch.title)}" onchange="syllabus[${i}].title=this.value"></div>
+            <div class="field-full"><label>부제</label><input value="${escA(ch.subtitle)}" onchange="syllabus[${i}].subtitle=this.value"></div>
+            <div class="field-full"><label>불렛 (줄바꿈 구분)</label><textarea onchange="syllabus[${i}].bullets=this.value.split('\\n').filter(x=>x.trim())">${(ch.bullets||[]).join('\n')}</textarea></div>
+            <label class="marketing-toggle"><input type="checkbox" ${ch.isMarketing?'checked':''} onchange="syllabus[${i}].isMarketing=this.checked"> 🔥 마케팅 강조</label></div>`).join('');
+    }
+    function addChapter(){ syllabus.push({badge:`CHAPTER ${String(syllabus.length+1).padStart(2,'0')}`,weekLabel:`${syllabus.length+1}주차`,isMarketing:false,title:'',subtitle:'',bullets:[]}); renderSyllabusEditor(); }
+    function removeChapter(i){ if(confirm('삭제하시겠습니까?')){syllabus.splice(i,1);renderSyllabusEditor();} }
+    function saveSyllabus(){ saveSyllabusLS(); renderSyllabus(); showToast('success','목차 저장','메인 페이지에 동기화되었습니다.'); }
+    function resetSyllabus(){ syllabus=JSON.parse(JSON.stringify(DEFAULT_SYLLABUS)); saveSyllabusLS(); renderSyllabus(); renderSyllabusEditor(); showToast('success','목차 초기화','기본 목차로 복원되었습니다.'); }
+
+    // Leads
+    function renderLeadsTable(){
+        const leads=getLeads(),tbody=document.getElementById('lead-tbody'),empty=document.getElementById('empty-leads'),wrap=document.querySelector('.lead-table-wrapper');
+        const fc=leads.filter(l=>l.type==='free').length,pc=leads.filter(l=>l.type==='premium').length;
+        document.getElementById('stat-total').textContent=leads.length; document.getElementById('stat-free').textContent=fc; document.getElementById('stat-premium').textContent=pc; document.getElementById('lead-count-tab').textContent=leads.length;
+        if(!leads.length){wrap.style.display='none';empty.style.display='block';return;}
+        wrap.style.display='block';empty.style.display='none';
+        tbody.innerHTML=leads.map((l,i)=>{
+            const scheduleInfo=l.sessionDate?`${esc(l.sessionDate)}<br><span style="font-size:11px;color:var(--text-muted)">${esc(l.sessionTime||'')}</span>`:'-';
+            return `<tr><td class="font-en">${i+1}</td><td><span class="lead-type-badge ${l.type==='free'?'free':'premium'}">${l.type==='free'?'무료강의':'정규 선발'}</span></td><td>${esc(l.name)}</td><td class="font-en">${esc(l.phone)}</td><td class="font-en">${esc(l.email)}</td><td>${scheduleInfo}</td><td>${l.timestamp}</td><td><button class="delete-lead-btn" onclick="handleDeleteLead('${l.id}')">파기</button></td></tr>`;
+        }).join('');
+    }
+    function handleDeleteLead(id){ if(confirm('영구 파기하시겠습니까?')){deleteLead(id);renderLeadsTable();showToast('success','파기 완료','데이터가 소멸되었습니다.');} }
+
+    // Utils
+    function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+    function escA(s){return s?s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):'';}
+
+    // Scroll Anim
+    function initScrollAnim(){
+        const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+        document.querySelectorAll('.anim-scroll').forEach(el=>obs.observe(el));
+    }
+
+    // INIT
+    document.addEventListener('DOMContentLoaded',()=>{loadConfig();startCountdown();initScrollAnim();});
+    document.getElementById('password-modal').addEventListener('click',function(e){if(e.target===this)closePasswordModal();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePasswordModal();closeDashboard();closeCompletionModal();}});
+    </script>
+</body>
+</html>
