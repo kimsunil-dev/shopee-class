@@ -708,6 +708,9 @@
             outline: none; transition: all 0.3s ease;
         }
         .config-input-wrap input:focus, .config-input-wrap textarea:focus { border-color: var(--neon-mint); box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1); }
+        .config-input-wrap input[type="date"]::-webkit-calendar-picker-indicator,
+        .config-input-wrap input[type="time"]::-webkit-calendar-picker-indicator,
+        .config-input-wrap input[type="datetime-local"]::-webkit-calendar-picker-indicator { filter: invert(0.8); cursor: pointer; }
         .config-input-wrap textarea { resize: vertical; min-height: 60px; }
         .config-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
         .config-field { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px; }
