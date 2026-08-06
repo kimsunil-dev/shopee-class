@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <style>
         /* ══════════════════════════════════════════════
            DESIGN TOKENS
@@ -1094,21 +1096,57 @@
     ];
     let appConfig={...DEFAULT_CONFIG}, syllabus=JSON.parse(JSON.stringify(DEFAULT_SYLLABUS));
 
+    // ━━━ FIREBASE INIT ━━━
+    const firebaseConfig = {
+      apiKey: "AIzaSyDEEe0AlEIveYdHI-BcIZLCltqJNqBR1K0",
+      authDomain: "shopee-class.firebaseapp.com",
+      databaseURL: "https://shopee-class-default-rtdb.firebaseio.com",
+      projectId: "shopee-class",
+      storageBucket: "shopee-class.firebasestorage.app",
+      messagingSenderId: "216044858450",
+      appId: "1:216044858450:web:a0e28e5e52bdec4fbfc38b"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let allLeads = []; // Store leads globally
+
     // ━━━ LOAD/SAVE ━━━
     function loadConfig(){
-        try{ const s=localStorage.getItem('shopee_lecture_config'); if(s) appConfig={...DEFAULT_CONFIG,...JSON.parse(s)}; }catch(e){}
-        try{ const s=localStorage.getItem('shopee_syllabus'); if(s) syllabus=JSON.parse(s); }catch(e){}
-        renderAll();
+        db.ref('appConfig').on('value', snap => {
+            const val = snap.val();
+            if(val) appConfig = {...DEFAULT_CONFIG, ...val};
+            renderAll();
+            startCountdown();
+            if(document.getElementById('admin-dashboard').classList.contains('active')){
+                populateConfigFields();
+            }
+        });
+        db.ref('syllabus').on('value', snap => {
+            const val = snap.val();
+            if(val) syllabus = val;
+            renderSyllabus();
+            if(document.getElementById('admin-dashboard').classList.contains('active')){
+                renderSyllabusEditor();
+            }
+        });
+        db.ref('leads').on('value', snap => {
+            const val = snap.val() || {};
+            allLeads = Object.keys(val).map(k => ({...val[k], id: k})).sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+            updateScarcity();
+            if(document.getElementById('admin-dashboard').classList.contains('active')){
+                renderLeadsTable();
+            }
+        });
     }
-    function saveConfigLS(){ try{localStorage.setItem('shopee_lecture_config',JSON.stringify(appConfig));}catch(e){} }
-    function saveSyllabusLS(){ try{localStorage.setItem('shopee_syllabus',JSON.stringify(syllabus));}catch(e){} }
+    function saveConfigLS(){ db.ref('appConfig').set(appConfig).catch(console.error); }
+    function saveSyllabusLS(){ db.ref('syllabus').set(syllabus).catch(console.error); }
 
     function renderAll(){ renderConfig(); renderSyllabus(); updateScarcity(); updateNaverPay(); }
 
     function getSeatsRemaining(sessionNum){
-        const leads=getLeads().filter(l=>l.type==='free'&&l.session==sessionNum);
-        const limit=sessionNum==1?appConfig.seatLimit1:appConfig.seatLimit2;
-        return Math.max(0,(limit||30)-leads.length);
+        const used = allLeads.filter(l=>l.type==='free'&&l.session==sessionNum).length;
+        const limit = sessionNum==1 ? appConfig.seatLimit1 : appConfig.seatLimit2;
+        return Math.max(0, (limit||30) - used);
     }
     function renderConfig(){
         document.getElementById('rendered-date1').textContent=appConfig.date1;
@@ -1272,10 +1310,14 @@
     }
 
     // ━━━ LEADS ━━━
-    function getLeads(){ try{const d=localStorage.getItem('shopee_leads');return d?JSON.parse(d):[];}catch(e){return[];} }
-    function saveLeads(l){ localStorage.setItem('shopee_leads',JSON.stringify(l)); }
-    function addLead(l){ const ls=getLeads(); l.id=Date.now()+'_'+Math.random().toString(36).substr(2,6); l.timestamp=new Date().toLocaleString('ko-KR'); ls.push(l); saveLeads(ls); updateScarcity(); return l; }
-    function deleteLead(id){ saveLeads(getLeads().filter(l=>l.id!==id)); updateScarcity(); }
+    function getLeads(){ return allLeads; }
+    function addLead(l){ 
+        l.timestamp=new Date().toLocaleString('ko-KR'); 
+        const newRef = db.ref('leads').push();
+        l.id = newRef.key;
+        return newRef.set(l).then(() => l);
+    }
+    function deleteLead(id){ db.ref('leads/'+id).remove().catch(console.error); }
 
     // ━━━ WEB3FORMS ━━━
     async function sendEmail(d){
