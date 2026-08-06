@@ -1133,6 +1133,7 @@
             const val = snap.val() || {};
             allLeads = Object.keys(val).map(k => ({...val[k], id: k})).sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
             updateScarcity();
+            renderConfig(); // 좌석 수 실시간 갱신을 위해 추가
             if(document.getElementById('admin-dashboard').classList.contains('active')){
                 renderLeadsTable();
             }
