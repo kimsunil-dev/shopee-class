@@ -1008,8 +1008,14 @@
                 <div class="config-session-group">
                     <h4>📅 세션 1 (필수)</h4>
                     <div class="config-session-row">
-                        <div class="config-input-wrap"><label>날짜 (표시용)</label><input type="text" id="cfg-date1" placeholder="2026년 7월 25일 (토)"></div>
-                        <div class="config-input-wrap"><label>시간 (표시용)</label><input type="text" id="cfg-time1" placeholder="오후 2시 ~ 오후 5시 (총 3시간)"></div>
+                        <div class="config-input-wrap"><label>날짜 (클릭하여 선택)</label><input type="date" id="cfg-date1"></div>
+                        <div class="config-input-wrap"><label>시간 (시작 ~ 종료)</label>
+                            <div style="display:flex;gap:5px;align-items:center;">
+                                <input type="time" id="cfg-time1-start" style="flex:1;background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-main);padding:0.6rem;border-radius:6px;">
+                                <span style="color:var(--text-muted);">~</span>
+                                <input type="time" id="cfg-time1-end" style="flex:1;background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-main);padding:0.6rem;border-radius:6px;">
+                            </div>
+                        </div>
                     </div>
                     <div class="config-session-row">
                         <div class="config-input-wrap"><label>⏱️ D-Day 기준 일시</label><input type="datetime-local" id="cfg-countdown1"></div>
@@ -1019,8 +1025,14 @@
                 <div class="config-session-group">
                     <h4>📅 세션 2 (선택 — 비워두면 숨김)</h4>
                     <div class="config-session-row">
-                        <div class="config-input-wrap"><label>날짜</label><input type="text" id="cfg-date2" placeholder=""></div>
-                        <div class="config-input-wrap"><label>시간</label><input type="text" id="cfg-time2" placeholder=""></div>
+                        <div class="config-input-wrap"><label>날짜 (선택)</label><input type="date" id="cfg-date2"></div>
+                        <div class="config-input-wrap"><label>시간 (시작 ~ 종료)</label>
+                            <div style="display:flex;gap:5px;align-items:center;">
+                                <input type="time" id="cfg-time2-start" style="flex:1;background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-main);padding:0.6rem;border-radius:6px;">
+                                <span style="color:var(--text-muted);">~</span>
+                                <input type="time" id="cfg-time2-end" style="flex:1;background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-main);padding:0.6rem;border-radius:6px;">
+                            </div>
+                        </div>
                     </div>
                     <div class="config-session-row">
                         <div class="config-input-wrap"><label>⏱️ D-Day 기준 일시</label><input type="datetime-local" id="cfg-countdown2"></div>
@@ -1345,9 +1357,13 @@
 
     function toDatetimeLocal(iso){ return iso?iso.slice(0,16):''; }
     function populateConfigFields(){
-        document.getElementById('cfg-date1').value=appConfig.date1; document.getElementById('cfg-time1').value=appConfig.time1;
+        document.getElementById('cfg-date1').value=appConfig.rawDate1||'';
+        document.getElementById('cfg-time1-start').value=appConfig.rawTime1Start||'';
+        document.getElementById('cfg-time1-end').value=appConfig.rawTime1End||'';
         document.getElementById('cfg-countdown1').value=toDatetimeLocal(appConfig.countdown1);
-        document.getElementById('cfg-date2').value=appConfig.date2||''; document.getElementById('cfg-time2').value=appConfig.time2||'';
+        document.getElementById('cfg-date2').value=appConfig.rawDate2||'';
+        document.getElementById('cfg-time2-start').value=appConfig.rawTime2Start||'';
+        document.getElementById('cfg-time2-end').value=appConfig.rawTime2End||'';
         document.getElementById('cfg-countdown2').value=toDatetimeLocal(appConfig.countdown2);
         document.getElementById('cfg-loc').value=appConfig.loc; document.getElementById('cfg-subloc').value=appConfig.subloc;
         document.getElementById('cfg-web3key').value=appConfig.web3key;
@@ -1355,10 +1371,34 @@
         document.getElementById('cfg-seatLimit2').value=appConfig.seatLimit2||30;
         document.getElementById('cfg-naverPayUrl').value=appConfig.naverPayUrl||'';
     }
+    function formatKoreanDate(dStr) {
+        if(!dStr) return ''; const d = new Date(dStr); if(isNaN(d)) return dStr;
+        const days = ['일','월','화','수','목','금','토'];
+        return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})`;
+    }
+    function formatKoreanTime(start, end) {
+        if(!start || !end) return '';
+        const sArr = start.split(':'), eArr = end.split(':');
+        let sh = parseInt(sArr[0],10), sm = sArr[1];
+        let eh = parseInt(eArr[0],10), em = eArr[1];
+        const sAmPm = sh >= 12 ? '오후' : '오전'; sh = sh % 12 || 12;
+        const eAmPm = eh >= 12 ? '오후' : '오전'; eh = eh % 12 || 12;
+        let diff = (new Date(`2000-01-01T${end}:00`) - new Date(`2000-01-01T${start}:00`)) / 3600000;
+        if(diff < 0) diff += 24;
+        const diffStr = diff % 1 === 0 ? diff : diff.toFixed(1);
+        return `${sAmPm} ${sh}시${sm!=='00'?' '+sm+'분':''} ~ ${eAmPm} ${eh}시${em!=='00'?' '+em+'분':''} (총 ${diffStr}시간)`;
+    }
+    
     function saveConfig(){
-        appConfig.date1=document.getElementById('cfg-date1').value.trim(); appConfig.time1=document.getElementById('cfg-time1').value.trim();
+        const rd1=document.getElementById('cfg-date1').value; appConfig.rawDate1=rd1; if(rd1) appConfig.date1=formatKoreanDate(rd1); else appConfig.date1='';
+        const rt1s=document.getElementById('cfg-time1-start').value, rt1e=document.getElementById('cfg-time1-end').value;
+        appConfig.rawTime1Start=rt1s; appConfig.rawTime1End=rt1e; if(rt1s&&rt1e) appConfig.time1=formatKoreanTime(rt1s,rt1e); else appConfig.time1='';
+        
         const cd1=document.getElementById('cfg-countdown1').value; appConfig.countdown1=cd1?cd1+':00':'';
-        appConfig.date2=document.getElementById('cfg-date2').value.trim(); appConfig.time2=document.getElementById('cfg-time2').value.trim();
+        
+        const rd2=document.getElementById('cfg-date2').value; appConfig.rawDate2=rd2; if(rd2) appConfig.date2=formatKoreanDate(rd2); else appConfig.date2='';
+        const rt2s=document.getElementById('cfg-time2-start').value, rt2e=document.getElementById('cfg-time2-end').value;
+        appConfig.rawTime2Start=rt2s; appConfig.rawTime2End=rt2e; if(rt2s&&rt2e) appConfig.time2=formatKoreanTime(rt2s,rt2e); else appConfig.time2='';
         const cd2=document.getElementById('cfg-countdown2').value; appConfig.countdown2=cd2?cd2+':00':'';
         appConfig.loc=document.getElementById('cfg-loc').value.trim(); appConfig.subloc=document.getElementById('cfg-subloc').value.trim();
         appConfig.web3key=document.getElementById('cfg-web3key').value.trim();
