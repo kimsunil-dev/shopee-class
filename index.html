@@ -940,7 +940,7 @@
                         <div class="form-group"><label>성함 *</label><input type="text" id="free-name" placeholder="홍길동" required></div>
                         <div class="form-group"><label>연락처 *</label><input type="tel" id="free-phone" placeholder="010-0000-0000" required></div>
                         <div class="form-group"><label>이메일 *</label><input type="email" id="free-email" placeholder="example@email.com" required></div>
-                        <button type="submit" class="submit-btn mint" id="free-submit-btn">🎟️ 무료 좌석 예약 확정하기</button>
+                        <button type="submit" class="submit-btn mint" id="free-submit-btn">🎟️ 무료강의 신청</button>
                         <p class="form-note">예약 확정 즉시 입력하신 이메일로 오시는 길 안내가 발송됩니다.</p>
                     </form>
                 </div>
@@ -1346,7 +1346,7 @@
         const remaining=getSeatsRemaining(sessionNum);
         if(remaining<=0){
             showToast('error','신청이 마감되었습니다','선택하신 세션의 좌석이 모두 마감되었습니다.');
-            btn.disabled=false; btn.innerHTML='🎟️ 무료 좌석 예약 확정하기';
+            btn.disabled=false; btn.innerHTML='🎟️ 무료강의 신청';
             return;
         }
         // 중복 체크
@@ -1360,7 +1360,7 @@
             if(dupPhone) reason.push('연락처');
             if(dupEmail) reason.push('이메일');
             showToast('error','이미 등록되었습니다',reason.join(', ')+'이(가) 이미 등록된 정보입니다.');
-            btn.disabled=false; btn.innerHTML='🎟️ 무료 좌석 예약 확정하기';
+            btn.disabled=false; btn.innerHTML='🎟️ 무료강의 신청';
             return;
         }
         try {
@@ -1384,7 +1384,7 @@
             showToast('error', '오류 발생', '처리 중 문제가 발생했습니다.');
         } finally {
             btn.disabled = false;
-            btn.innerHTML = '🎟️ 무료 좌석 예약 확정하기';
+            btn.innerHTML = '🎟️ 무료강의 신청';
         }
     });
 
