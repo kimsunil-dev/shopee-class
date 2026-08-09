@@ -1409,7 +1409,7 @@
     }
 
     // ━━━ ADMIN ━━━
-    const PASSCODE='0000';
+    const PASSCODE='1316';
     document.getElementById('admin-trigger').addEventListener('click',()=>{ document.getElementById('password-modal').classList.add('active'); document.getElementById('password-input').value=''; setTimeout(()=>document.getElementById('password-input').focus(),100); });
     document.getElementById('password-input').addEventListener('keydown',e=>{if(e.key==='Enter')verifyPassword();});
     function verifyPassword(){ const i=document.getElementById('password-input'); if(i.value===PASSCODE){closePasswordModal();openDashboard();}else{i.classList.add('error');setTimeout(()=>i.classList.remove('error'),600);i.value='';} }
