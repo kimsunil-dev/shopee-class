@@ -841,7 +841,7 @@
                     📞 신청 전 궁금한 점이 있으신가요?
                 </p>
                 <p style="margin: 8px 0; font-size: clamp(20px, 2vw, 24px); font-weight: 800;">
-                    <a href="kakaotalk://addfriend?id=complexnumer" onclick="navigator.clipboard.writeText('complexnumer').then(() => alert('카카오톡 아이디(complexnumer)가 복사되었습니다. 모바일에서는 카카오톡이 자동으로 열립니다.'));" style="color: var(--neon-mint-light); text-decoration: none;">카톡문의: complexnumer</a>
+                    <a id="rendered-kakao" href="#" style="color: var(--neon-mint-light); text-decoration: none;">카톡문의: complexnumer</a>
                 </p>
                 <p style="margin: 0; font-size: clamp(13px, 1vw, 15px); color: var(--text-secondary);">
                     궁금하신 점을 문자로 남겨주시면, 확인 후 빠르게 연락드리겠습니다.
@@ -1068,6 +1068,7 @@
                     </div>
 
                     <div class="config-field"><label>💚 네이버페이 결제 URL</label><input type="text" id="cfg-naverPayUrl" placeholder="https://smartstore.naver.com/..."></div>
+                    <div class="config-field"><label>💬 카카오톡 ID</label><input type="text" id="cfg-kakaoId" placeholder="complexnumer"></div>
                 </div>
                 <div class="config-actions">
                     <button class="btn-primary" onclick="saveConfig()">💾 저장 및 동기화</button>
@@ -1104,7 +1105,7 @@
         date1:"2026년 7월 25일 (토)", time1:"오후 2시 ~ 오후 5시 (총 3시간)", countdown1:"2026-07-25T14:00:00", seatLimit1:30,
         date2:"", time2:"", countdown2:"", seatLimit2:30,
         loc:"서울 강남역 인근 대면 전용 강의실", subloc:"(수강 확정자 한정 오시는 길 개별 안심 약도 전송)",
-        web3key:"", naverPayUrl:""
+        web3key:"", naverPayUrl:"", kakaoId:"complexnumer"
     };
     const DEFAULT_SYLLABUS = [
         { badge:"CHAPTER 01", weekLabel:"1주차", isMarketing:false, title:"메커니즘 & 마진 설계", subtitle:"\"쇼피의 유통 흐름을 완벽히 정복하여 10원 단위의 리스크까지 사전에 지워내는 첫 단계\"", bullets:["쇼피 셀러-고객 간 3자 유통망 완벽 해체","글로벌 세금 종류(GTX, 부가세) 및 역산 공식","동남아 5개국 변동 마진 완벽 정복","정회원 전용 미공개 카페 승인 및 개방"] },
@@ -1172,6 +1173,19 @@
         document.getElementById('rendered-time1').textContent=appConfig.time1;
         document.getElementById('rendered-loc').textContent=appConfig.loc;
         document.getElementById('rendered-subloc').textContent=appConfig.subloc;
+
+        const kakaoEl = document.getElementById('rendered-kakao');
+        if(kakaoEl) {
+            const kakao = appConfig.kakaoId || 'complexnumer';
+            kakaoEl.href = `kakaotalk://addfriend?id=${kakao}`;
+            kakaoEl.textContent = `카톡문의: ${kakao}`;
+            kakaoEl.onclick = function(e) {
+                e.preventDefault();
+                navigator.clipboard.writeText(kakao).then(() => alert(`카카오톡 아이디(${kakao})가 복사되었습니다. 모바일에서는 카카오톡이 자동으로 열립니다.`));
+                window.location.href = `kakaotalk://addfriend?id=${kakao}`;
+            };
+        }
+
         // 세션 1 잔여 좌석
         const r1=getSeatsRemaining(1);
         document.getElementById('rendered-seats1').textContent=r1>0?`💺 잔여 ${r1}석`:'🔒 마감';
@@ -1442,6 +1456,7 @@
         document.getElementById('cfg-seatLimit1').value=appConfig.seatLimit1||30;
         document.getElementById('cfg-seatLimit2').value=appConfig.seatLimit2||30;
         document.getElementById('cfg-naverPayUrl').value=appConfig.naverPayUrl||'';
+        document.getElementById('cfg-kakaoId').value=appConfig.kakaoId||'complexnumer';
     }
     function formatKoreanDate(dStr) {
         if(!dStr) return ''; const d = new Date(dStr); if(isNaN(d)) return dStr;
@@ -1477,6 +1492,7 @@
         appConfig.seatLimit1=parseInt(document.getElementById('cfg-seatLimit1').value)||30;
         appConfig.seatLimit2=parseInt(document.getElementById('cfg-seatLimit2').value)||30;
         appConfig.naverPayUrl=document.getElementById('cfg-naverPayUrl').value.trim();
+        appConfig.kakaoId=document.getElementById('cfg-kakaoId').value.trim();
         saveConfigLS(); renderAll(); startCountdown();
         showToast('success','저장 완료','강의 정보가 즉시 동기화되었습니다.');
     }
