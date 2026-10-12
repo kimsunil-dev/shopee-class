@@ -812,7 +812,7 @@
             </p>
             <div class="hero-cta-group">
                 <a href="#funnel-section" class="btn-primary">무료강의 신청 →</a>
-                <a href="#funnel-section" class="btn-rose">📋 정기강의 신청하기</a>
+                <a href="https://www.payapp.kr/L/z4m7k0" target="_blank" rel="noopener noreferrer" class="btn-rose" id="hero-regular-btn">💳 정기강의 신청하기</a>
             </div>
 
         </div>
@@ -964,8 +964,8 @@
                         <div class="curriculum-week mk"><div class="week-num font-en">W4</div><div class="week-info"><h4>쇼피 캠페인 생성 및 참여, 부과세 환급</h4><p>캠페인간 성격 및 생성 방법 과 부과서 환급 방법</p></div></div>
                     </div>
                     <div style="margin-top:auto;">
-                        <a href="#" class="btn-primary" id="naver-pay-btn" target="_blank" style="width:100%;justify-content:center;font-size:17px;padding:18px;background:var(--neon-mint);color:var(--bg-card);">💚 정기강의 신청하기</a>
-                        <p class="form-note" style="text-align:center;">네이버페이 안전결제로 진행됩니다.</p>
+                        <a href="https://www.payapp.kr/L/z4m7k0" class="btn-primary" id="naver-pay-btn" target="_blank" rel="noopener noreferrer" style="width:100%;justify-content:center;font-size:17px;padding:18px;background:var(--neon-rose);color:#ffffff;">💳 정기강의 신청하기 (PayApp 결제)</a>
+                        <p class="form-note" style="text-align:center;">페이앱(PayApp) 안전결제로 즉시 진행됩니다.</p>
                     </div>
                 </div>
             </div>
@@ -1067,7 +1067,7 @@
                         </div>
                     </div>
 
-                    <div class="config-field"><label>💚 네이버페이 결제 URL</label><input type="text" id="cfg-naverPayUrl" placeholder="https://smartstore.naver.com/..."></div>
+                    <div class="config-field"><label>💳 정기강의 결제 URL (PayApp / 페이앱)</label><input type="text" id="cfg-naverPayUrl" placeholder="https://www.payapp.kr/L/z4m7k0"></div>
                     <div class="config-field"><label>💬 카카오톡 ID</label><input type="text" id="cfg-kakaoId" placeholder="complexnumer"></div>
                 </div>
                 <div class="config-actions">
@@ -1105,7 +1105,7 @@
         date1:"2026년 7월 25일 (토)", time1:"오후 2시 ~ 오후 5시 (총 3시간)", countdown1:"2026-07-25T14:00:00", seatLimit1:30,
         date2:"", time2:"", countdown2:"", seatLimit2:30,
         loc:"서울 강남역 인근 대면 전용 강의실", subloc:"(수강 확정자 한정 오시는 길 개별 안심 약도 전송)",
-        web3key:"", naverPayUrl:"", kakaoId:"complexnumer"
+        web3key:"", naverPayUrl:"https://www.payapp.kr/L/z4m7k0", kakaoId:"complexnumer"
     };
     const DEFAULT_SYLLABUS = [
         { badge:"CHAPTER 01", weekLabel:"1주차", isMarketing:false, title:"메커니즘 & 마진 설계", subtitle:"\"쇼피의 유통 흐름을 완벽히 정복하여 10원 단위의 리스크까지 사전에 지워내는 첫 단계\"", bullets:["쇼피 셀러-고객 간 3자 유통망 완벽 해체","글로벌 세금 종류(GTX, 부가세) 및 역산 공식","동남아 5개국 변동 마진 완벽 정복","정회원 전용 미공개 카페 승인 및 개방"] },
@@ -1259,9 +1259,11 @@
     }
 
     function updateNaverPay(){
+        const payUrl = (appConfig.naverPayUrl && appConfig.naverPayUrl.trim()) ? appConfig.naverPayUrl.trim() : 'https://www.payapp.kr/L/z4m7k0';
         const btn=document.getElementById('naver-pay-btn');
-        if(appConfig.naverPayUrl&&appConfig.naverPayUrl.trim()) btn.href=appConfig.naverPayUrl;
-        else btn.href='#';
+        if(btn) btn.href=payUrl;
+        const heroBtn=document.getElementById('hero-regular-btn');
+        if(heroBtn) heroBtn.href=payUrl;
     }
 
     // ━━━ SCARCITY ━━━
